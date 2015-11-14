@@ -1,7 +1,5 @@
 package com.littlesword.ozbargain.network;
 
-import android.util.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -25,8 +23,8 @@ public final class APIImp implements APIInterface{
     public Document getMainDocument(String url) {
         Document doc = null;
         try {
-            doc = Jsoup.connect("https://www.ozbargain.com.au/").get();
-            
+            doc = Jsoup.connect(url).get();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
