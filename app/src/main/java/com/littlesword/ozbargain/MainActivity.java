@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.littlesword.ozbargain.network.APIImp;
+import com.littlesword.ozbargain.util.DocExtractor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -59,8 +60,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void processDoc(Document doc) {
-        Log.d("MainActivity", "title: " + doc.title());
-        mNavigationView.getMenu().add("jiang you");
+        DocExtractor.getCategories(doc).subscribe(
+                s -> mNavigationView.getMenu().add(s)
+        );
     }
 
     @Override
@@ -99,20 +101,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
