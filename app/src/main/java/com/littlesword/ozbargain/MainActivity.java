@@ -27,11 +27,13 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     @Bind(R.id.toolbar)
-    private Toolbar mToolbar;
+    Toolbar mToolbar;
     @Bind(R.id.fab)
-    private FloatingActionButton mFab;
+    FloatingActionButton mFab;
     @Bind(R.id.drawer_layout)
-    private DrawerLayout mDrawer;
+    DrawerLayout mDrawer;
+    @Bind(R.id.nav_view)
+    NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,7 @@ public class MainActivity extends AppCompatActivity
             this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
     }
 
     private void handlerError(Throwable error) {
@@ -60,13 +60,13 @@ public class MainActivity extends AppCompatActivity
 
     private void processDoc(Document doc) {
         Log.d("MainActivity", "title: " + doc.title());
+        mNavigationView.getMenu().add("jiang you");
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -113,9 +113,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
