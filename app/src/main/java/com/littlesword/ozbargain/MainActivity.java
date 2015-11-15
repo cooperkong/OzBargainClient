@@ -14,8 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.util.DocExtractor;
+import com.littlesword.ozbargain.view.CategoryFragment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,20 +28,20 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, CategoryFragment.MainInterface {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.fab)
-    FloatingActionButton mFab;
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawer;
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
+    Document document;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Fresco.initialize(this);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         APIImp api = new APIImp();
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity
         DocExtractor.getCategories(doc).subscribe(
                 s -> mNavigationView.getMenu().add(s)
         );
+        document = doc;
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new CategoryFragment()).commit();
     }
 
     @Override
@@ -103,5 +107,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public Document getDoc() {
+        return document;
     }
 }
