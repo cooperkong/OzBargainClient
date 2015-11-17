@@ -10,8 +10,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/menu_item_description"
         fresco:placeholderImage="@drawable/ic_placeholder"
-        android:layout_width="72dp"
-        android:layout_height="72dp" />
+        android:layout_width="96dp"
+        android:layout_height="96dp" />
     <TextView
         android:id="@id/menu_item_description"
         android:layout_marginTop="@dimen/list_item_margin_top"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/menu_item_upvote"
-        android:layout_below="@id/menu_item_description"
+        android:layout_above="@+id/menu_item_downvote"
         android:layout_alignParentRight="true"
         android:textColor="@color/upvote_color"
         android:background="@color/upvote_bg"
@@ -28,18 +28,19 @@
         android:gravity="right"
         android:layout_height="wrap_content" />
     <TextView
-        android:id="@+id/menu_item_downvote"
-        android:layout_below="@id/menu_item_upvote"
+        android:id="@id/menu_item_downvote"
         android:layout_alignParentRight="true"
+        android:layout_above="@+id/space"
         android:gravity="right"
         android:textColor="@color/downvote_color"
         android:background="@color/downvote_bg"
         android:layout_width="42dp"
         android:layout_height="wrap_content" />
     <Space
+        android:id="@id/space"
         android:layout_below="@id/menu_item_image"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_margin_top" />
+        android:layout_height="@dimen/list_item_bottom_space" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

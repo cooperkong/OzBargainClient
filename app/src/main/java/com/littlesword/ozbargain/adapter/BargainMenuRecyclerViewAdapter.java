@@ -2,6 +2,8 @@ package com.littlesword.ozbargain.adapter;
 
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +26,7 @@ import butterknife.ButterKnife;
 public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<BargainMenuRecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<Bargain> mBargains;
+    private Pattern pattern = Pattern.compile("\\$[0-9]+(.[0-9][0-9]?)?");
 
     public BargainMenuRecyclerViewAdapter(ArrayList<Bargain> bargains){
         this.mBargains = bargains;
@@ -38,7 +43,17 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mImage.setImageURI(Uri.parse(mBargains.get(position).image));
-        holder.mDesc.setText(mBargains.get(position).descriptoin);
+        String desc = mBargains.get(position).descriptoin;
+        Matcher matcher = pattern.matcher(mBargains.get(position).descriptoin);
+
+        // Find all matches
+        while (matcher.find()) {
+            // Get the matching string
+            String match = matcher.group();
+            desc = desc.replace(match, "<font color=\"#aa3311\">" + match + "</font>");
+        }
+        holder.mDesc.setText(Html.fromHtml(desc));
+
         holder.mDownVote.setText(mBargains.get(position).downVote + " -");
         holder.mUpVote.setText(mBargains.get(position).upVote + " +");
     }
