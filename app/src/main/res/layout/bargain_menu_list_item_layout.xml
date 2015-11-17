@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
+    android:background="@android:color/holo_blue_bright"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/menu_item_description"
+        android:text="description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/menu_item_image"
+        fresco:placeholderImage="@android:drawable/ic_delete"
         android:layout_width="64dp"
         android:layout_height="64dp" />
     <TextView
         android:id="@+id/menu_item_price"
+        android:text="price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

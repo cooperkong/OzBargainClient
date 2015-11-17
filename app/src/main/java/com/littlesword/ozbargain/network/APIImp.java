@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -23,12 +24,23 @@ public final class APIImp implements APIInterface{
     public Document getMainDocument(String url) {
         Document doc = null;
         try {
-            doc = Jsoup.connect(url).get();
+            doc = Jsoup.connect(url)
+                    .get();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         return doc;
+    }
+
+    public Document getMainDocumentString(String url) {
+        Document doc = null;
+        doc = Jsoup.parse(url);
+        return doc;
+    }
+
+    public Observable<Object> getMainDocumentAsyncString(String url) {
+        return Observable.defer(() -> Observable.just(getMainDocumentString(url))).compose(applySchedulers());
     }
 
     public Observable<Object> getMainDocumentAsync(String url) {
@@ -44,4 +56,5 @@ public final class APIImp implements APIInterface{
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
 }
