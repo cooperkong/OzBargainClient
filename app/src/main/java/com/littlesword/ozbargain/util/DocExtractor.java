@@ -20,9 +20,17 @@ public class DocExtractor {
     private static final String LINK = "a";
     private static final String LIST = "ul";
     private static final String DIV = "div";
+    private static final String IMG = "img";
+    private static final String SRC = "src";
     private static final String CONTENT = "content";
     private static final String CLASS = "class";
+
+
+//    custom classes
     private static final String NODE_ATTRIBUTE = "node node-ozbdeal node-teaser";
+    private static final String CLASS_N_RIGHT = "n-right";
+    private static final String CLASS_FOX_CONTAINER = "foxshot-container";
+    private static final String TITLE = "title";
     private static final String HEADER = "header2nd";//sub header, eg, "Electronic..."
 
     /**
@@ -46,12 +54,13 @@ public class DocExtractor {
         Element a = doc.getElementById(CONTENT);
         Elements v = a.getElementsByAttributeValueContaining(CLASS, NODE_ATTRIBUTE);
         for(Element node : v){
-            Elements right = node.getElementsByAttributeValueContaining(CLASS, "n-right");
+            Elements right = node.getElementsByAttributeValueContaining(CLASS, CLASS_N_RIGHT);
             for(Element r : right) {
-                Elements href = r.getElementsByAttributeValueContaining(CLASS, "foxshot-container");
-                Elements img = href.get(0).getElementsByTag("img");
+                Elements href = r.getElementsByAttributeValueContaining(CLASS, CLASS_FOX_CONTAINER);
+                Elements img = href.get(0).getElementsByTag(IMG);
                 Bargain b = new Bargain();
-                b.image = img.attr("src");
+                b.image = img.attr(SRC);
+                b.descriptoin = r.getElementsByClass(TITLE).get(0).getElementsByTag(LINK).get(0).text();
                 ret.add(b);
             }
         }

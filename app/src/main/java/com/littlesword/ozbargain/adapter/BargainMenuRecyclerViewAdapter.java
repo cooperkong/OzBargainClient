@@ -38,6 +38,7 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mImage.setImageURI(Uri.parse(mBargains.get(position).image));
+        holder.mDesc.setText(mBargains.get(position).descriptoin);
     }
 
     @Override
@@ -48,11 +49,11 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @Bind(R.id.menu_item_description)
-        TextView mTextView;
+        TextView mDesc;
         @Bind(R.id.menu_item_image)
         SimpleDraweeView mImage;
-        @Bind(R.id.menu_item_price)
-        TextView mPrice;
+        @Bind(R.id.menu_item_coupon)
+        TextView mCoupon;
 
         public ViewHolder(View v) {
             super(v);
