@@ -6,5 +6,6 @@ package com.littlesword.ozbargain.model;
 public class Bargain {
     public String image;
     public String descriptoin;
-    public String price;
+    public String upVote;
+    public String downVote;
 }

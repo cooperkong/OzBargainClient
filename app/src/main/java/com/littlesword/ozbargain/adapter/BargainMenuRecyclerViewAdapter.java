@@ -39,6 +39,8 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mImage.setImageURI(Uri.parse(mBargains.get(position).image));
         holder.mDesc.setText(mBargains.get(position).descriptoin);
+        holder.mDownVote.setText(mBargains.get(position).downVote + " -");
+        holder.mUpVote.setText(mBargains.get(position).upVote + " +");
     }
 
     @Override
@@ -52,8 +54,10 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         TextView mDesc;
         @Bind(R.id.menu_item_image)
         SimpleDraweeView mImage;
-        @Bind(R.id.menu_item_coupon)
-        TextView mCoupon;
+        @Bind(R.id.menu_item_upvote)
+        TextView mUpVote;
+        @Bind(R.id.menu_item_downvote)
+        TextView mDownVote;
 
         public ViewHolder(View v) {
             super(v);

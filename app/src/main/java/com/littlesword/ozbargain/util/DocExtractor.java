@@ -24,6 +24,7 @@ public class DocExtractor {
     private static final String SRC = "src";
     private static final String CONTENT = "content";
     private static final String CLASS = "class";
+    private static final String SPAN = "span";
 
 
 //    custom classes
@@ -54,15 +55,18 @@ public class DocExtractor {
         Element a = doc.getElementById(CONTENT);
         Elements v = a.getElementsByAttributeValueContaining(CLASS, NODE_ATTRIBUTE);
         for(Element node : v){
+            Bargain b = new Bargain();
             Elements right = node.getElementsByAttributeValueContaining(CLASS, CLASS_N_RIGHT);
             for(Element r : right) {
                 Elements href = r.getElementsByAttributeValueContaining(CLASS, CLASS_FOX_CONTAINER);
                 Elements img = href.get(0).getElementsByTag(IMG);
-                Bargain b = new Bargain();
                 b.image = img.attr(SRC);
                 b.descriptoin = r.getElementsByClass(TITLE).get(0).getElementsByTag(LINK).get(0).text();
-                ret.add(b);
             }
+            b.upVote = node.getElementsByAttributeValueContaining(CLASS, "voteup").get(0).getElementsByTag(SPAN).get(0).getElementsByTag(SPAN).get(0).text();
+            b.downVote = node.getElementsByAttributeValueContaining(CLASS, "votedown").get(0).getElementsByTag(SPAN).get(0).getElementsByTag(SPAN).get(0).text();
+            ret.add(b);
+
         }
         return ret;
     }
