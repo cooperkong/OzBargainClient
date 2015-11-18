@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Fresco.initialize(this);
-        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         APIImp api = new APIImp();
@@ -57,7 +56,11 @@ public class MainActivity extends AppCompatActivity
             this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
+        mNavigationView.getMenu().add(getString(R.string.home));
         mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.getMenu().getItem(0).setCheckable(true);
+        mNavigationView.getMenu().getItem(0).setChecked(true);
+        onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
     }
 
 
@@ -128,8 +131,16 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        item.setCheckable(true);
+        item.setChecked(true);
+        mNavigationView.setCheckedItem(id);
+        updateTitle(item.getTitle().toString());
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void updateTitle(String s) {
+        getSupportActionBar().setTitle(s);
     }
 
     @Override
