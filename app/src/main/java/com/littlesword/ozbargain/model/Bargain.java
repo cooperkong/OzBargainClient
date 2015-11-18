@@ -8,4 +8,5 @@ public class Bargain {
     public String descriptoin;
     public String upVote;
     public String downVote;
+    public String submittedOn;
 }

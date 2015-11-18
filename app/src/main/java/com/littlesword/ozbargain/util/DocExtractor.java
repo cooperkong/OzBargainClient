@@ -4,6 +4,8 @@ import com.littlesword.ozbargain.model.Bargain;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -32,6 +34,9 @@ public class DocExtractor {
     private static final String CLASS_N_RIGHT = "n-right";
     private static final String CLASS_FOX_CONTAINER = "foxshot-container";
     private static final String TITLE = "title";
+    private static final String SBUMITTED = "submitted";
+    private static final String CLASS_VOTEUP = "voteup";
+    private static final String CLASS_VOTEDOWN = "votedown";
     private static final String HEADER = "header2nd";//sub header, eg, "Electronic..."
 
     /**
@@ -50,6 +55,11 @@ public class DocExtractor {
     }
 
 
+    /**
+     * Parse html list to object list
+     * @param doc
+     * @return
+     */
     public static ArrayList<Bargain> getBargainItems(Document doc){
         ArrayList<Bargain> ret = new ArrayList<>();
         Element a = doc.getElementById(CONTENT);
@@ -62,9 +72,10 @@ public class DocExtractor {
                 Elements img = href.get(0).getElementsByTag(IMG);
                 b.image = img.attr(SRC);
                 b.descriptoin = r.getElementsByClass(TITLE).get(0).getElementsByTag(LINK).get(0).text();
+                b.submittedOn = r.getElementsByClass(SBUMITTED).get(0).textNodes().get(0).text();//index 2 is the actual timestamp
             }
-            b.upVote = node.getElementsByAttributeValueContaining(CLASS, "voteup").get(0).getElementsByTag(SPAN).get(0).getElementsByTag(SPAN).get(0).text();
-            b.downVote = node.getElementsByAttributeValueContaining(CLASS, "votedown").get(0).getElementsByTag(SPAN).get(0).getElementsByTag(SPAN).get(0).text();
+            b.upVote = node.getElementsByAttributeValueContaining(CLASS, CLASS_VOTEUP).get(0).getElementsByTag(SPAN).get(0).getElementsByTag(SPAN).get(0).text();
+            b.downVote = node.getElementsByAttributeValueContaining(CLASS, CLASS_VOTEDOWN).get(0).getElementsByTag(SPAN).get(0).getElementsByTag(SPAN).get(0).text();
             ret.add(b);
 
         }
