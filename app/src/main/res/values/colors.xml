@@ -3,6 +3,7 @@
     <color name="colorPrimary">#cd6702</color>
     <color name="colorPrimaryDark">#A55403</color>
     <color name="colorAccent">#eeeeee</color>
+    <color name="listitemhover">#fffae8</color>
     <color name="upvote_color">#008800</color>
     <color name="downvote_color">#880000</color>
     <color name="upvote_bg">#F0FFF0</color>
