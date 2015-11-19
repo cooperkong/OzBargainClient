@@ -1,9 +1,5 @@
 package com.littlesword.ozbargain;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +12,8 @@ import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.littlesword.ozbargain.network.APIImp;
-import com.littlesword.ozbargain.scheduler.BargainReceiver;
+import com.littlesword.ozbargain.scheduler.BargainFetcher;
+import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.view.CategoryFragment;
 
@@ -25,7 +22,6 @@ import org.jsoup.nodes.Document;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.GregorianCalendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
     Document document;
+    APIImp api = new APIImp();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,51 +44,26 @@ public class MainActivity extends AppCompatActivity
         Fresco.initialize(this);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-        APIImp api = new APIImp();
-//        api.getMainDocumentAsync("https://ozbargain.com.au").subscribe(
-//                doc -> processDoc((Document) doc),
-//                error -> handlerError(error)
-//        );
-        api.getMainDocumentAsyncString(readTextFile()).subscribe(
-                doc -> processDoc((Document) doc),
-                error -> handlerError(error)
-        );
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
+        selectHome();
+        BargainFetcher.scheduleTask(this);
+    }
+
+    private void selectHome() {
         mNavigationView.getMenu().add(getString(R.string.home));
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.getMenu().getItem(0).setCheckable(true);
         mNavigationView.getMenu().getItem(0).setChecked(true);
         onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
-        scheduleAlarm();
     }
 
-    public void scheduleAlarm()
-    {
-        // time at which alarm will be scheduled here alarm is scheduled at 1 day from current time,
-        // we fetch  the current time in milliseconds and added 1 day time
-        // i.e. 24*60*60*1000= 86,400,000   milliseconds in a day
-        Long time = new GregorianCalendar().getTimeInMillis()+3000;
-
-        // create an Intent and set the class which will execute when Alarm triggers, here we have
-        // given AlarmReciever in the Intent, the onRecieve() method of this class will execute when
-        // alarm triggers and
-        //we will write the code to send SMS inside onRecieve() method pf Alarmreciever class
-        Intent intentAlarm = new Intent(this, BargainReceiver.class);
-
-        // create the object
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        //set the alarm for particular time
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time,
-                3000, PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
-
-    }
-    public String readTextFile() {
-        InputStream inputStream = getResources().openRawResource(R.raw.sad); // getting XML
+    public String readTextFile(int resId) {
+        InputStream inputStream = getResources().openRawResource(resId); // getting XML
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -161,6 +133,14 @@ public class MainActivity extends AppCompatActivity
         item.setChecked(true);
         mNavigationView.setCheckedItem(id);
         updateTitle(item.getTitle().toString());
+//        api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
+//                doc -> processDoc((Document) doc),
+//                error -> handlerError(error)
+//        );
+        api.getMainDocumentAsyncString(readTextFile(R.raw.sad)).subscribe(
+                doc -> processDoc((Document) doc),
+                error -> handlerError(error)
+        );
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
