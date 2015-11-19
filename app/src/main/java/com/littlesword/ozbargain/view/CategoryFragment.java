@@ -1,6 +1,7 @@
 package com.littlesword.ozbargain.view;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,13 @@ import android.view.ViewGroup;
 
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.adapter.BargainMenuRecyclerViewAdapter;
+import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.util.DocExtractor;
+import com.littlesword.ozbargain.util.NotificationUtil;
 
 import org.jsoup.nodes.Document;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,9 +48,17 @@ public class CategoryFragment extends Fragment {
         ButterKnife.bind(this, v);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
-        mAdapter = new BargainMenuRecyclerViewAdapter(DocExtractor.getBargainItems(mainInterface.getDoc()));
+        ArrayList<Bargain> list = DocExtractor.getBargainItems(mainInterface.getDoc());
+        mAdapter = new BargainMenuRecyclerViewAdapter(list);
+        updateTimestamp(list);
         mRecycleView.setAdapter(mAdapter);
         return v;
+    }
+
+    private void updateTimestamp(ArrayList<Bargain> list) {
+        SharedPreferences.Editor mPref = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE).edit();
+        mPref.putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, list.get(0).submittedOn);
+        mPref.commit();
     }
 
     public interface MainInterface{

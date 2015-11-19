@@ -11,6 +11,9 @@ import com.littlesword.ozbargain.R;
  */
 public class NotificationUtil {
 
+    public static final String LATEST_BARGAIN_TIMESTAMP = "latest_timestamp";
+    public static final String SHARED_PREF = "ob_sharedpref";
+
     public static Notification build(Context context, String title, String content){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
