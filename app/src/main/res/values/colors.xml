@@ -8,4 +8,5 @@
     <color name="downvote_color">#880000</color>
     <color name="upvote_bg">#F0FFF0</color>
     <color name="downvote_bg">#fff0f0</color>
+    <color name="listitemtag">#112288</color>
 </resources>

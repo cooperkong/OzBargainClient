@@ -20,7 +20,7 @@ public class TimeUtil {
         try {
             SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date inDate = outputFormat.parse(in.replace("on","").replace("-",""));
-            Date outDate = outputFormat.parse(in.replace("on","").replace("-",""));
+            Date outDate = outputFormat.parse(out.replace("on","").replace("-",""));
             return inDate.before(outDate);
         } catch (ParseException e) {
             e.printStackTrace();

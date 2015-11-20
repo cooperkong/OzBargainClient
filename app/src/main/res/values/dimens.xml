@@ -11,5 +11,6 @@
     <!-- Bargain list item margin-->
 
     <dimen name="list_item_margin_top">6dp</dimen>
+    <dimen name="list_item_margin_top_small">2dp</dimen>
     <dimen name="list_item_bottom_space">12dp</dimen>
 </resources>

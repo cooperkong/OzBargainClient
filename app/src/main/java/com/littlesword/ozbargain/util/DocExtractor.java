@@ -9,6 +9,8 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import rx.Observable;
@@ -35,6 +37,8 @@ public class DocExtractor {
     private static final String CLASS_FOX_CONTAINER = "foxshot-container";
     private static final String TITLE = "title";
     private static final String SBUMITTED = "submitted";
+    private static final String LINKS = "links";
+    private static final String TAG = "fa-tag";
     private static final String CLASS_VOTEUP = "voteup";
     private static final String CLASS_VOTEDOWN = "votedown";
     private static final String HEADER = "header2nd";//sub header, eg, "Electronic..."
@@ -72,6 +76,7 @@ public class DocExtractor {
                 Elements img = href.get(0).getElementsByTag(IMG);
                 b.image = img.attr(SRC);
                 b.descriptoin = r.getElementsByClass(TITLE).get(0).getElementsByTag(LINK).get(0).text();
+                b.tag = r.getElementsByClass(LINKS).get(0).getElementsByTag(LINK).get(0).text();
                 b.submittedOn = r.getElementsByClass(SBUMITTED).get(0).textNodes().get(0).text();//index 2 is the actual timestamp
             }
             b.upVote = node.getElementsByAttributeValueContaining(CLASS, CLASS_VOTEUP).get(0).getElementsByTag(SPAN).get(0).getElementsByTag(SPAN).get(0).text();
@@ -79,6 +84,12 @@ public class DocExtractor {
             ret.add(b);
 
         }
+        Collections.sort(ret, new Comparator<Bargain>() {
+            @Override
+            public int compare(Bargain lhs, Bargain rhs) {
+                return rhs.submittedOn.compareTo(lhs.submittedOn) ;
+            }
+        });
         return ret;
     }
 }

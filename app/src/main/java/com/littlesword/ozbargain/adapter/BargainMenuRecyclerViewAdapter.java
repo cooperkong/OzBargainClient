@@ -56,6 +56,7 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
 
         holder.mDownVote.setText(mBargains.get(position).downVote + " -");
         holder.mUpVote.setText(mBargains.get(position).upVote + " +");
+        holder.mTag.setText(mBargains.get(position).tag);
         holder.mSubmitted.setText(mBargains.get(position).submittedOn.replace("on","").replace("-",""));
     }
 
@@ -76,6 +77,8 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         TextView mDownVote;
         @Bind(R.id.menu_item_timestamp)
         TextView mSubmitted;
+        @Bind(R.id.menu_item_tag)
+        TextView mTag;
 
         public ViewHolder(View v) {
             super(v);

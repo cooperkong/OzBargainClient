@@ -9,4 +9,5 @@ public class Bargain {
     public String upVote;
     public String downVote;
     public String submittedOn;
+    public String tag;
 }
