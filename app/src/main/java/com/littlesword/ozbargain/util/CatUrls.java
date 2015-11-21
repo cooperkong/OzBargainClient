@@ -1,5 +1,6 @@
 package com.littlesword.ozbargain.util;
 
+
 /**
  * Created by kongw1 on 19/11/15.
  */
@@ -14,4 +15,5 @@ public interface CatUrls {
     String COMPUTING = "/cat/computing";
     String TRAVEL = "/cat/travel";
     String ENTERTAINMENT = "/cat/entertainment";
+    String MOBILE = "/cat/mobile";
 }

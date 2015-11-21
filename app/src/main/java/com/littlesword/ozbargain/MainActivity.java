@@ -23,6 +23,8 @@ import org.jsoup.nodes.Document;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity
     Document document;
     APIImp api = new APIImp();
     private static final String DIALOG_TAG = "loading_dialog_tag";;
+    private List<String> categories = new ArrayList<>();
+    private boolean isHomeSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void selectHome() {
+        isHomeSelected = true;
         mNavigationView.getMenu().add(getString(R.string.home));
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.getMenu().getItem(0).setCheckable(true);
@@ -95,7 +100,12 @@ public class MainActivity extends AppCompatActivity
 
     private void processDoc(Document doc) {
         DocExtractor.getCategories(doc).subscribe(
-                s -> mNavigationView.getMenu().add(s)
+                s -> {
+                    if (!categories.contains(s) && isHomeSelected) {
+                        categories.add(s);
+                        mNavigationView.getMenu().add(s);
+                    }
+                }//add category to menu item.
         );
         document = doc;
         dismissLoading();
@@ -137,18 +147,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
         item.setCheckable(true);
         item.setChecked(true);
-        mNavigationView.setCheckedItem(id);
         updateTitle(item.getTitle().toString());
-        api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
-                doc -> processDoc((Document) doc),
-                error -> handlerError(error)
-        );
-
+        //display the loading dialog.
         DialogFragment dialog = DialogFragment.newInstant();
-        dialog.show(getSupportFragmentManager().beginTransaction(),DIALOG_TAG );
+        dialog.show(getSupportFragmentManager().beginTransaction(), DIALOG_TAG);
+        String uri = "";
+        if(item.getTitle().toString().compareToIgnoreCase(getString(R.string.home)) != 0){
+            isHomeSelected = false;
+            uri = "/cat/" + item.getTitle().toString().replace("&","-").replace(" ","").toLowerCase();
+        }
+        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
+                doc -> processDoc((Document) doc),
+                this :: handlerError
+        );
 //        api.getMainDocumentAsyncString(readTextFile(R.raw.sad)).subscribe(
 //                doc -> processDoc((Document) doc),
 //                error -> handlerError(error)
