@@ -16,6 +16,7 @@ import com.littlesword.ozbargain.scheduler.BargainFetcher;
 import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.view.CategoryFragment;
+import com.littlesword.ozbargain.view.DialogFragment;
 
 import org.jsoup.nodes.Document;
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView mNavigationView;
     Document document;
     APIImp api = new APIImp();
+    private static final String DIALOG_TAG = "loading_dialog_tag";;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +84,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void handlerError(Throwable error) {
+        dismissLoading();
+    }
 
+    private void dismissLoading() {
+        DialogFragment loading = (DialogFragment) getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
+        if(loading != null)
+            loading.dismiss();
     }
 
     private void processDoc(Document doc) {
@@ -90,6 +98,7 @@ public class MainActivity extends AppCompatActivity
                 s -> mNavigationView.getMenu().add(s)
         );
         document = doc;
+        dismissLoading();
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new CategoryFragment()).commit();
     }
 
@@ -133,14 +142,17 @@ public class MainActivity extends AppCompatActivity
         item.setChecked(true);
         mNavigationView.setCheckedItem(id);
         updateTitle(item.getTitle().toString());
-//        api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
-//                doc -> processDoc((Document) doc),
-//                error -> handlerError(error)
-//        );
-        api.getMainDocumentAsyncString(readTextFile(R.raw.sad)).subscribe(
+        api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
                 doc -> processDoc((Document) doc),
                 error -> handlerError(error)
         );
+
+        DialogFragment dialog = DialogFragment.newInstant();
+        dialog.show(getSupportFragmentManager().beginTransaction(),DIALOG_TAG );
+//        api.getMainDocumentAsyncString(readTextFile(R.raw.sad)).subscribe(
+//                doc -> processDoc((Document) doc),
+//                error -> handlerError(error)
+//        );
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }

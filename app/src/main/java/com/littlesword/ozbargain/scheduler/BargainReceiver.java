@@ -7,11 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
-import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
+import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
 import com.littlesword.ozbargain.util.TimeUtil;
@@ -39,8 +38,6 @@ public class BargainReceiver extends BroadcastReceiver {
                 SharedPreferences mPref = context.getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE);
                 String lastBargainTimestamp = mPref.getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
                 String dismissedTime = intent.getExtras().getString(DISSMISSED_TIMESTAMP);
-                Log.d("wenchao", "lastBargainTimestamp " + lastBargainTimestamp);
-                Log.d("wenchao", "dismissedTime " + dismissedTime);
                 if(dismissedTime != null){
                     if(TimeUtil.isNew(lastBargainTimestamp, dismissedTime)){
                         //save the new time stamp.
@@ -50,14 +47,14 @@ public class BargainReceiver extends BroadcastReceiver {
             }
         }
         APIImp api = new APIImp();
-//        api.getMainDocumentAsync("https://ozbargain.com.au").subscribe(
-//                doc -> processDoc((Document) doc, context),
-//                error -> handlerError(error)
-//        );
-        api.getMainDocumentAsyncString(readTextFile(R.raw.sad2, context)).subscribe(
+        api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
                 doc -> processDoc((Document) doc, context),
                 error -> handlerError(error)
         );
+//        api.getMainDocumentAsyncString(readTextFile(R.raw.sad2, context)).subscribe(
+//                doc -> processDoc((Document) doc, context),
+//                error -> handlerError(error)
+//        );
     }
 
     public String readTextFile(int resId, Context context) {
