@@ -2,6 +2,7 @@ package com.littlesword.ozbargain.util;
 
 import com.littlesword.ozbargain.model.Bargain;
 
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -32,6 +33,7 @@ public class DocExtractor {
 
 
 //    custom classes
+    private static final String ID = "id";
     private static final String NODE_ATTRIBUTE = "node node-ozbdeal node-teaser";
     private static final String CLASS_N_RIGHT = "n-right";
     private static final String CLASS_FOX_CONTAINER = "foxshot-container";
@@ -71,6 +73,7 @@ public class DocExtractor {
         for(Element node : v){
             Bargain b = new Bargain();
             Elements right = node.getElementsByAttributeValueContaining(CLASS, CLASS_N_RIGHT);
+            b.nodeId = node.getElementsByTag(DIV).get(0).attr(ID).replace("node","node/");
             for(Element r : right) {
                 Elements href = r.getElementsByAttributeValueContaining(CLASS, CLASS_FOX_CONTAINER);
                 Elements img = href.get(0).getElementsByTag(IMG);
