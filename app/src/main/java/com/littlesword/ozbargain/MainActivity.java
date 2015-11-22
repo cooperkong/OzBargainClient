@@ -171,7 +171,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateTitle(String s) {
-        getSupportActionBar().setTitle(s);
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setTitle(s);
     }
 
     @Override
