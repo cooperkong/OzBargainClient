@@ -1,6 +1,7 @@
 package com.littlesword.ozbargain.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * Created by kongw1 on 14/11/15.
  */
-public class CategoryFragment extends Fragment {
+public class CategoryFragment extends Fragment implements onBargainItemClicklistener {
 
     @Bind(R.id.bargain_menu_recyclerview)
     RecyclerView mRecycleView;
@@ -49,7 +50,7 @@ public class CategoryFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
         ArrayList<Bargain> list = DocExtractor.getBargainItems(mainInterface.getDoc());
-        mAdapter = new BargainMenuRecyclerViewAdapter(list);
+        mAdapter = new BargainMenuRecyclerViewAdapter(list, this);
         updateTimestamp(list);
         mRecycleView.setAdapter(mAdapter);
         return v;
@@ -58,7 +59,14 @@ public class CategoryFragment extends Fragment {
     private void updateTimestamp(ArrayList<Bargain> list) {
         SharedPreferences.Editor mPref = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE).edit();
         mPref.putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, list.get(0).submittedOn);
-        mPref.commit();
+        mPref.apply();
+    }
+
+    @Override
+    public void onBargainClicked() {
+        Intent i = new Intent();
+        i.setClass(getContext(), BargainDetailActivity.class);
+        startActivity(i);
     }
 
     public interface MainInterface{

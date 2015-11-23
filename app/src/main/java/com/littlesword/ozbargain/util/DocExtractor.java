@@ -87,12 +87,11 @@ public class DocExtractor {
             ret.add(b);
 
         }
-        Collections.sort(ret, new Comparator<Bargain>() {
-            @Override
-            public int compare(Bargain lhs, Bargain rhs) {
-                return rhs.submittedOn.compareTo(lhs.submittedOn) ;
-            }
-        });
+        Collections.sort(ret,
+                (lhs, rhs) -> {
+                    return rhs.submittedOn.compareTo(lhs.submittedOn);
+                }
+        );
         return ret;
     }
 }

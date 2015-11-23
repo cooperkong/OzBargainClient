@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
+import com.littlesword.ozbargain.view.CategoryFragment;
+import com.littlesword.ozbargain.view.onBargainItemClicklistener;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -26,10 +28,12 @@ import butterknife.ButterKnife;
 public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<BargainMenuRecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<Bargain> mBargains;
+    private onBargainItemClicklistener listener;
     private Pattern pattern = Pattern.compile("\\$[0-9]+(.[0-9][0-9]?)?");
 
-    public BargainMenuRecyclerViewAdapter(ArrayList<Bargain> bargains){
+    public BargainMenuRecyclerViewAdapter(ArrayList<Bargain> bargains, CategoryFragment listener){
         this.mBargains = bargains;
+        this.listener = listener;
     }
 
     @Override
@@ -37,6 +41,9 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bargain_menu_list_item_layout, parent, false);
         ViewHolder vh = new ViewHolder(v);
+        v.setOnClickListener(
+                l -> listener.onBargainClicked()
+        );
         return vh;
     }
 
@@ -58,6 +65,7 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         holder.mUpVote.setText(mBargains.get(position).upVote + " +");
         holder.mTag.setText(mBargains.get(position).tag);
         holder.mSubmitted.setText(mBargains.get(position).submittedOn.replace("on","").replace("-",""));
+
     }
 
     @Override
@@ -84,5 +92,6 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
             super(v);
             ButterKnife.bind(this, v);
         }
+
     }
 }
