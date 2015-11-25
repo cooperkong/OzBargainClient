@@ -64,9 +64,10 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 
     @Override
     public void onBargainClicked() {
-        Intent i = new Intent();
-        i.setClass(getContext(), BargainDetailActivity.class);
-        startActivity(i);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new BargainDetailFragment())
+                .addToBackStack("detail_fragment")
+                .commit();
     }
 
     public interface MainInterface{

@@ -22,8 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.BargainDetailActivity"/>
         <receiver android:name=".scheduler.BargainReceiver"/>
+        <!-- Parent activity meta-data to support 4.0 and lower -->
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity" />
     </application>
 
 </manifest>

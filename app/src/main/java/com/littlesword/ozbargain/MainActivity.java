@@ -109,7 +109,10 @@ public class MainActivity extends AppCompatActivity
         );
         document = doc;
         dismissLoading();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new CategoryFragment()).commit();
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new CategoryFragment())
+                .commit();
     }
 
     @Override
