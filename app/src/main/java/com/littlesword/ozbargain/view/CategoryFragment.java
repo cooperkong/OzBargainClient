@@ -1,7 +1,6 @@
 package com.littlesword.ozbargain.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,19 +10,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.adapter.BargainMenuRecyclerViewAdapter;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
-
 import org.jsoup.nodes.Document;
-
 import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observable;
 
 /**
  * Created by kongw1 on 14/11/15.
@@ -49,7 +45,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         ButterKnife.bind(this, v);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
-        ArrayList<Bargain> list = DocExtractor.getBargainItems(mainInterface.getDoc());
+        ArrayList<Bargain> list = DocExtractor.getBargainItems(mainInterface.getHomeDoc());
         mAdapter = new BargainMenuRecyclerViewAdapter(list, this);
         updateTimestamp(list);
         mRecycleView.setAdapter(mAdapter);
@@ -63,14 +59,28 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     }
 
     @Override
-    public void onBargainClicked() {
+    public void onBargainClicked(Bargain bargain) {
+        mainInterface.getNodeDoc(bargain).subscribe(
+                this :: processDocument
+        );
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new BargainDetailFragment())
+                .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
                 .addToBackStack("detail_fragment")
                 .commit();
     }
 
+    private void processDocument(Document document) {
+        mainInterface.dismissLoading();
+        //get to the bargain node details page.
+        DocExtractor.getComments(document);
+
+    }
+
+
     public interface MainInterface{
-        Document getDoc();
+        Document getHomeDoc();
+        Observable<Document> getNodeDoc(Bargain bargain);
+        void dismissLoading();
+
     }
 }

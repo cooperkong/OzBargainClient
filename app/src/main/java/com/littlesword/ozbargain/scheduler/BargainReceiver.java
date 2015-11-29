@@ -88,7 +88,7 @@ public class BargainReceiver extends BroadcastReceiver {
 
             int mNotificationId = 001;
             // Gets an instance of the NotificationManager service
-            Notification notification = NotificationUtil.build(context,"New Deal!",list.get(0).descriptoin);
+            Notification notification = NotificationUtil.build(context,"New Deal!",list.get(0).title);
             Intent deleteIntent = new Intent(context, BargainReceiver.class);
             deleteIntent.setAction(NOTIFICATION_DISSMISSED);
             deleteIntent.putExtra(DISSMISSED_TIMESTAMP, list.get(0).submittedOn);

@@ -43,7 +43,7 @@ public final class APIImp implements APIInterface{
         return Observable.defer(() -> Observable.just(getMainDocumentString(url))).compose(applySchedulers());
     }
 
-    public Observable<Object> getMainDocumentAsync(String url) {
+    public Observable<Document> getMainDocumentAsync(String url) {
         return Observable.defer(() -> Observable.just(getMainDocument(url))).compose(applySchedulers());
     }
 

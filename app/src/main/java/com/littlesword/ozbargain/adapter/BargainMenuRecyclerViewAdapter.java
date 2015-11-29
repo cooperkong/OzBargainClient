@@ -3,7 +3,6 @@ package com.littlesword.ozbargain.adapter;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,17 +40,18 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bargain_menu_list_item_layout, parent, false);
         ViewHolder vh = new ViewHolder(v);
-        v.setOnClickListener(
-                l -> listener.onBargainClicked()
-        );
+
         return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.itemView.setOnClickListener(
+                l -> listener.onBargainClicked(mBargains.get(position))
+        );
         holder.mImage.setImageURI(Uri.parse(mBargains.get(position).image));
-        String desc = mBargains.get(position).descriptoin;
-        Matcher matcher = pattern.matcher(mBargains.get(position).descriptoin);
+        String desc = mBargains.get(position).title;
+        Matcher matcher = pattern.matcher(mBargains.get(position).title);
 
         // Find all matches
         while (matcher.find()) {

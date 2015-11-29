@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
 import com.littlesword.ozbargain.util.CatUrls;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observable;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, CategoryFragment.MainInterface {
@@ -92,7 +94,8 @@ public class MainActivity extends AppCompatActivity
         dismissLoading();
     }
 
-    private void dismissLoading() {
+    @Override
+    public void dismissLoading() {
         DialogFragment loading = (DialogFragment) getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
         if(loading != null)
             loading.dismiss();
@@ -153,9 +156,7 @@ public class MainActivity extends AppCompatActivity
         item.setCheckable(true);
         item.setChecked(true);
         updateTitle(item.getTitle().toString());
-        //display the loading dialog.
-        DialogFragment dialog = DialogFragment.newInstant();
-        dialog.show(getSupportFragmentManager().beginTransaction(), DIALOG_TAG);
+        showLoading();
         String uri = "";
         if(item.getTitle().toString().compareToIgnoreCase(getString(R.string.home)) != 0){
             isHomeSelected = false;
@@ -173,13 +174,26 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void showLoading() {
+        //display the loading dialog.
+        DialogFragment dialog = DialogFragment.newInstant();
+        dialog.show(getSupportFragmentManager().beginTransaction(), DIALOG_TAG);
+    }
+
     private void updateTitle(String s) {
         if(getSupportActionBar() != null)
             getSupportActionBar().setTitle(s);
     }
 
     @Override
-    public Document getDoc() {
+    public Document getHomeDoc() {
         return document;
     }
+
+    @Override
+    public Observable<Document> getNodeDoc(Bargain bargain) {
+        showLoading();
+        return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId);
+    }
+
 }

@@ -1,17 +1,14 @@
 package com.littlesword.ozbargain.util;
 
 import com.littlesword.ozbargain.model.Bargain;
+import com.littlesword.ozbargain.model.Comment;
 
-import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import rx.Observable;
@@ -44,6 +41,12 @@ public class DocExtractor {
     private static final String CLASS_VOTEUP = "voteup";
     private static final String CLASS_VOTEDOWN = "votedown";
     private static final String HEADER = "header2nd";//sub header, eg, "Electronic..."
+
+    //for comment
+    private static final String COMMENT_LEVEL0 = "comment level0";
+    private static final String COMMENT_WRAP = "comment wrap";
+    private static final String COMMENT_LEVEL = "comment level";
+    private static final String COMMENT_NRIGHT = "n-right";
 
     /**
      * return the list of categories.
@@ -78,7 +81,7 @@ public class DocExtractor {
                 Elements href = r.getElementsByAttributeValueContaining(CLASS, CLASS_FOX_CONTAINER);
                 Elements img = href.get(0).getElementsByTag(IMG);
                 b.image = img.attr(SRC);
-                b.descriptoin = r.getElementsByClass(TITLE).get(0).getElementsByTag(LINK).get(0).text();
+                b.title = r.getElementsByClass(TITLE).get(0).getElementsByTag(LINK).get(0).text();
                 b.tag = r.getElementsByClass(LINKS).get(0).getElementsByTag(LINK).get(0).text();
                 b.submittedOn = r.getElementsByClass(SBUMITTED).get(0).textNodes().get(0).text();//index 2 is the actual timestamp
             }
@@ -92,6 +95,23 @@ public class DocExtractor {
                     return rhs.submittedOn.compareTo(lhs.submittedOn);
                 }
         );
+        return ret;
+    }
+
+    public static ArrayList<Comment> getComments(Document document){
+        ArrayList<Comment> ret = new ArrayList<>();
+        Elements commentLevel0 = document.getElementsByAttributeValue(CLASS, COMMENT_LEVEL0);
+        for(Element element  : commentLevel0.get(0).getElementsByAttributeValue(CLASS, COMMENT_NRIGHT)){
+            Comment comment = new Comment();
+            Elements content = element.getElementsByAttributeValueContaining(CLASS, "content");
+            Elements submitted = element.getElementsByAttributeValueContaining(CLASS, "submitted");
+            for(int i=0; i < content.size(); i++){
+                comment.content = content.get(i).text();
+                comment.timestamp = submitted.get(i).text();
+            }
+            ret.add(comment);
+        }
+
         return ret;
     }
 }
