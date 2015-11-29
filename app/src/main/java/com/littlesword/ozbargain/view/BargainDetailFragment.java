@@ -1,15 +1,21 @@
 package com.littlesword.ozbargain.view;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.DraweeView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
+import com.littlesword.ozbargain.model.Comment;
+import com.littlesword.ozbargain.util.CommonUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +28,10 @@ public class BargainDetailFragment extends Fragment {
 
     @Bind(R.id.bargain_detail_title)
     TextView title;
+    @Bind(R.id.bargain_detail_comments)
+    TextView description;
+    @Bind(R.id.bargain_detail_image)
+    SimpleDraweeView image;
 
     @Nullable
     @Override
@@ -31,8 +41,13 @@ public class BargainDetailFragment extends Fragment {
         Bundle bundle = getArguments();
         if(bundle != null){
             Bargain mBargain = (Bargain) bundle.getSerializable(BARGAIN_DETAIL_KEY);
-            if(mBargain != null)
-                title.setText(mBargain.title);
+            if(mBargain != null) {
+                title.setText(Html.fromHtml(CommonUtil.applyColorToString(mBargain.title)));
+                image.setImageURI(Uri.parse(mBargain.image));
+                for(Comment c : mBargain.comments){
+                    description.append("\n" + c.timestamp + "   \n" + c.content + "\n");
+                }
+            }
         }
         return v;
     }

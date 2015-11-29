@@ -61,19 +61,19 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     @Override
     public void onBargainClicked(Bargain bargain) {
         mainInterface.getNodeDoc(bargain).subscribe(
-                this :: processDocument
+                document -> processDocument(document, bargain)
         );
+
+    }
+
+    private void processDocument(Document document, Bargain bargain) {
+        mainInterface.dismissLoading();
+        //get to the bargain node details page.
+        bargain.comments = DocExtractor.getComments(document);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
                 .addToBackStack("detail_fragment")
                 .commit();
-    }
-
-    private void processDocument(Document document) {
-        mainInterface.dismissLoading();
-        //get to the bargain node details page.
-        DocExtractor.getComments(document);
-
     }
 
 

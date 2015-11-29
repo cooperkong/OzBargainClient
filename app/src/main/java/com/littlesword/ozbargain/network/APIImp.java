@@ -28,6 +28,7 @@ public final class APIImp implements APIInterface{
                     .get();
 
         } catch (IOException e) {
+            //TODO sometimes through SSL exception, need to handle properly
             e.printStackTrace();
         }
         return doc;

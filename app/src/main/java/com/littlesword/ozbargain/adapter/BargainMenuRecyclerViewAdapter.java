@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
+import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.view.CategoryFragment;
 import com.littlesword.ozbargain.view.onBargainItemClicklistener;
 
@@ -28,7 +29,6 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
 
     private ArrayList<Bargain> mBargains;
     private onBargainItemClicklistener listener;
-    private Pattern pattern = Pattern.compile("\\$[0-9]+(.[0-9][0-9]?)?");
 
     public BargainMenuRecyclerViewAdapter(ArrayList<Bargain> bargains, CategoryFragment listener){
         this.mBargains = bargains;
@@ -51,15 +51,7 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         );
         holder.mImage.setImageURI(Uri.parse(mBargains.get(position).image));
         String desc = mBargains.get(position).title;
-        Matcher matcher = pattern.matcher(mBargains.get(position).title);
-
-        // Find all matches
-        while (matcher.find()) {
-            // Get the matching string
-            String match = matcher.group();
-            desc = desc.replace(match, "<font color=\"#aa3311\">" + match + "</font>");
-        }
-        holder.mDesc.setText(Html.fromHtml(desc));
+        holder.mDesc.setText(Html.fromHtml(CommonUtil.applyColorToString(desc)));
 
         holder.mDownVote.setText(mBargains.get(position).downVote + " -");
         holder.mUpVote.setText(mBargains.get(position).upVote + " +");

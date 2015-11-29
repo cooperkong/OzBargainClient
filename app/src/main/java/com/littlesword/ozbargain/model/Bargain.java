@@ -1,6 +1,7 @@
 package com.littlesword.ozbargain.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by kongw1 on 15/11/15.
@@ -13,4 +14,5 @@ public class Bargain implements Serializable{
     public String downVote;
     public String submittedOn;
     public String tag;
+    public ArrayList<Comment> comments;
 }

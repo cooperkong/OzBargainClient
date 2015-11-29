@@ -107,7 +107,7 @@ public class DocExtractor {
             Elements submitted = element.getElementsByAttributeValueContaining(CLASS, "submitted");
             for(int i=0; i < content.size(); i++){
                 comment.content = content.get(i).text();
-                comment.timestamp = submitted.get(i).text();
+                comment.timestamp = submitted.get(i).text().replace("¶", "");//weird symbol in the submitted string
             }
             ret.add(comment);
         }
