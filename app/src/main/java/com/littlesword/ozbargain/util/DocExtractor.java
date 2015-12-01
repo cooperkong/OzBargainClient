@@ -5,6 +5,8 @@ import com.littlesword.ozbargain.model.Comment;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -103,12 +105,28 @@ public class DocExtractor {
         Elements commentLevel0 = document.getElementsByAttributeValue(CLASS, COMMENT_LEVEL0);
         for(Element element  : commentLevel0.get(0).getElementsByAttributeValue(CLASS, COMMENT_NRIGHT)){
             Comment comment = new Comment();
-            Elements content = element.getElementsByAttributeValueContaining(CLASS, "content");
+            Elements contentElements = element.getElementsByAttributeValueContaining(CLASS, "content").get(0).getAllElements();
             Elements submitted = element.getElementsByAttributeValueContaining(CLASS, "submitted");
-            for(int i=0; i < content.size(); i++){
-                comment.content = content.get(i).text();
-                comment.timestamp = submitted.get(i).text().replace("¶", "");//weird symbol in the submitted string
+            for(int i=1; i < contentElements.size(); i++){
+                Element e = contentElements.get(i);
+                for(Node textElement : e.childNodes()){
+                    if (textElement.nodeName().compareToIgnoreCase("br") == 0)
+                        comment.content += "\n";
+                    else {
+                        if(textElement.childNodes().size() > 0)
+                            for(Node subnTextNode : textElement.childNodes()){//for styled text in comments
+                                //eg: <string>$43 </strong>
+                                if(subnTextNode instanceof TextNode)
+                                    comment.content += subnTextNode.toString();
+                            }
+                        else
+                            comment.content += textElement.toString();
+                    }
+
+                }
+                comment.content += "\n";
             }
+            comment.timestamp = submitted.get(0).text().replace("¶", "");//weird symbol in the submitted string
             ret.add(comment);
         }
 

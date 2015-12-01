@@ -5,7 +5,7 @@ package com.littlesword.ozbargain.model;
  */
 public class Comment {
     public String username;
-    public String content;
+    public String content = "";
     public String timestamp;
     public Comment comment;
 }

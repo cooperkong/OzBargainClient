@@ -61,7 +61,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     @Override
     public void onBargainClicked(Bargain bargain) {
         mainInterface.getNodeDoc(bargain).subscribe(
-                document -> processDocument(document, bargain)
+                document -> processDocument((Document) document, bargain)
         );
 
     }
@@ -79,7 +79,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 
     public interface MainInterface{
         Document getHomeDoc();
-        Observable<Document> getNodeDoc(Bargain bargain);
+        Observable<Object> getNodeDoc(Bargain bargain);
         void dismissLoading();
 
     }

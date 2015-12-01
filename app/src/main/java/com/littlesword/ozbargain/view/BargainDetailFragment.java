@@ -8,6 +8,8 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.DraweeView;
@@ -28,11 +30,10 @@ public class BargainDetailFragment extends Fragment {
 
     @Bind(R.id.bargain_detail_title)
     TextView title;
-    @Bind(R.id.bargain_detail_comments)
-    TextView description;
     @Bind(R.id.bargain_detail_image)
     SimpleDraweeView image;
-
+    @Bind(R.id.comment_container)
+    LinearLayout commentContainer;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class BargainDetailFragment extends Fragment {
                 title.setText(Html.fromHtml(CommonUtil.applyColorToString(mBargain.title)));
                 image.setImageURI(Uri.parse(mBargain.image));
                 for(Comment c : mBargain.comments){
-                    description.append("\n" + c.timestamp + "   \n" + c.content + "\n");
+                    commentContainer.addView(new CommentView(getContext(), c.timestamp, c.content));
                 }
             }
         }

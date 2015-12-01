@@ -1,5 +1,8 @@
 package com.littlesword.ozbargain.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,5 +22,24 @@ public class CommonUtil {
             input = input.replace(match, "<font color=\"#aa3311\">" + match + "</font>");
         }
         return input;
+    }
+
+
+    public static String readTextFile(InputStream inputStream) { // getting XML
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        byte buf[] = new byte[1024];
+        int len;
+        try {
+            while ((len = inputStream.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+
+        }
+        return outputStream.toString();
     }
 }
