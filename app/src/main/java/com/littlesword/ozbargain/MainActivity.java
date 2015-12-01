@@ -14,16 +14,13 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
-import com.littlesword.ozbargain.util.CatUrls;
+import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.view.CategoryFragment;
 import com.littlesword.ozbargain.view.DialogFragment;
 
 import org.jsoup.nodes.Document;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,24 +68,6 @@ public class MainActivity extends AppCompatActivity
         onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
     }
 
-    public String readTextFile(int resId) {
-        InputStream inputStream = getResources().openRawResource(resId); // getting XML
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        byte buf[] = new byte[1024];
-        int len;
-        try {
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
-            }
-            outputStream.close();
-            inputStream.close();
-        } catch (IOException e) {
-
-        }
-        return outputStream.toString();
-    }
 
     private void handlerError(Throwable error) {
         dismissLoading();
@@ -162,14 +141,14 @@ public class MainActivity extends AppCompatActivity
             isHomeSelected = false;
             uri = "/cat/" + item.getTitle().toString().replace("&","-").replace(" ","").toLowerCase();
         }
-        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
-                doc -> processDoc((Document) doc),
-                this :: handlerError
-        );
-//        api.getMainDocumentAsyncString(readTextFile(R.raw.sad)).subscribe(
+//        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
 //                doc -> processDoc((Document) doc),
-//                error -> handlerError(error)
+//                this :: handlerError
 //        );
+        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad))).subscribe(
+                doc -> processDoc((Document) doc),
+                error -> handlerError(error)
+        );
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -191,9 +170,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public Observable<Document> getNodeDoc(Bargain bargain) {
+    public Observable<Object> getNodeDoc(Bargain bargain) {
         showLoading();
-        return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId);
+//        return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId);
+        return api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad3)));
     }
 
 }
