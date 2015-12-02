@@ -29,6 +29,7 @@ public class DocExtractor {
     private static final String CONTENT = "content";
     private static final String CLASS = "class";
     private static final String SPAN = "span";
+    private static final String STRONG = "strong";
 
 
 //    custom classes
@@ -49,6 +50,9 @@ public class DocExtractor {
     private static final String COMMENT_WRAP = "comment wrap";
     private static final String COMMENT_LEVEL = "comment level";
     private static final String COMMENT_NRIGHT = "n-right";
+
+    //coupon code
+    private static final String COUPON_CODE = "couponcode";
 
     /**
      * return the list of categories.
@@ -131,5 +135,15 @@ public class DocExtractor {
         }
 
         return ret;
+    }
+
+    public static String getCoupon(Document document) {
+        Elements e = document.getElementsByAttributeValueContaining(CLASS, COUPON_CODE);
+        if(e == null)
+            return null;
+        else{
+            Element coupon = e.get(0).getElementsByTag(STRONG).get(0);
+            return coupon.text();
+        }
     }
 }

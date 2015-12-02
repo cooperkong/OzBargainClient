@@ -1,18 +1,19 @@
 package com.littlesword.ozbargain.view;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.DraweeView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
@@ -30,6 +31,8 @@ public class BargainDetailFragment extends Fragment {
 
     @Bind(R.id.bargain_detail_title)
     TextView title;
+    @Bind(R.id.bargain_detail_coupon)
+    TextView coupon;
     @Bind(R.id.bargain_detail_image)
     SimpleDraweeView image;
     @Bind(R.id.comment_container)
@@ -47,6 +50,15 @@ public class BargainDetailFragment extends Fragment {
                 image.setImageURI(Uri.parse(mBargain.image));
                 for(Comment c : mBargain.comments){
                     commentContainer.addView(new CommentView(getContext(), c.timestamp, c.content));
+                }
+                if(mBargain.coupon != null){
+                    coupon.setText(mBargain.coupon);
+                    Drawable shoppingCart = getResources().getDrawable(R.mipmap.ic_shopping_cart_black_12dp);
+                    Drawable wrapDrawable = DrawableCompat.wrap(shoppingCart);
+                    DrawableCompat.setTint(wrapDrawable, Color.parseColor("#aaaaaa"));
+                    coupon.setCompoundDrawablesWithIntrinsicBounds(wrapDrawable, null, null, null);
+                }else{
+                    coupon.setVisibility(View.GONE);
                 }
             }
         }

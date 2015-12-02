@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/title_container"
         android:padding="@dimen/list_item_bottom_space"
         android:layout_alignParentTop="true"
@@ -14,14 +14,28 @@
         <TextView
             android:id="@+id/bargain_detail_title"
             android:textSize="16sp"
+            android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/bargain_detail_image"
+            android:layout_below="@id/bargain_detail_title"
             fresco:placeholderImage="@drawable/ic_image_holder"
             android:layout_width="96dp"
             android:layout_height="96dp" />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/bargain_detail_coupon"
+            android:padding="@dimen/list_item_margin_top_small"
+            android:background="#eeeeee"
+            android:layout_margin="6dp"
+            android:layout_below="@id/bargain_detail_title"
+            android:layout_toRightOf="@id/bargain_detail_image"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textIsSelectable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
 
     <ScrollView
         android:layout_below="@id/title_container"
