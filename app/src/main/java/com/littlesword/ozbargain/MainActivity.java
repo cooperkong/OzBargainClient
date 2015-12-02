@@ -1,5 +1,6 @@
 package com.littlesword.ozbargain;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,8 @@ import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.view.CategoryFragment;
 import com.littlesword.ozbargain.view.DialogFragment;
+import com.littlesword.ozbargain.view.SettingsActivity;
+import com.littlesword.ozbargain.view.SettingsFragment;
 
 import org.jsoup.nodes.Document;
 
@@ -122,6 +125,10 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            // Display the fragment as the main content.
+            Intent i = new Intent();
+            i.setClass(this, SettingsActivity.class);
+            startActivity(i);
             return true;
         }
 
