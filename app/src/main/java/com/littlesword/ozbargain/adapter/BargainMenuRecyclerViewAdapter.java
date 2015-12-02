@@ -39,9 +39,7 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bargain_menu_list_item_layout, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
@@ -51,13 +49,28 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         );
         holder.mImage.setImageURI(Uri.parse(mBargains.get(position).image));
         String desc = mBargains.get(position).title;
-        holder.mDesc.setText(Html.fromHtml(CommonUtil.applyColorToString(desc)));
-
+        holder.mDesc.setText(Html.fromHtml( CommonUtil.applyColorToString(desc)));
+        holder.mExp.setText(expireoutofstockText(mBargains.get(position), holder.mExp));
         holder.mDownVote.setText(mBargains.get(position).downVote + " -");
         holder.mUpVote.setText(mBargains.get(position).upVote + " +");
         holder.mTag.setText(mBargains.get(position).tag);
         holder.mSubmitted.setText(mBargains.get(position).submittedOn.replace("on","").replace("-",""));
 
+    }
+
+    private String expireoutofstockText(Bargain bargain, TextView mExp) {
+        if(bargain.isExpired) {
+            mExp.setVisibility(View.VISIBLE);
+            return "EXPIRED";
+        }
+        else if(bargain.isOutofstock) {
+            mExp.setVisibility(View.VISIBLE);
+            return "OUT OF STOCK";
+        }
+        else {
+            mExp.setVisibility(View.GONE);
+            return "";
+        }
     }
 
     @Override
@@ -69,6 +82,8 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         // each data item is just a string in this case
         @Bind(R.id.menu_item_description)
         TextView mDesc;
+        @Bind(R.id.menu_item_expired)
+        TextView mExp;
         @Bind(R.id.menu_item_image)
         SimpleDraweeView mImage;
         @Bind(R.id.menu_item_upvote)

@@ -23,6 +23,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
+        android:id="@+id/menu_item_expired"
+        android:layout_marginTop="@dimen/list_item_margin_top"
+        android:layout_below="@id/menu_item_image"
+        android:textColor="@android:color/white"
+        android:padding="2dp"
+        android:background="#cc3300"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
         android:id="@+id/menu_item_timestamp"
         android:textSize="12sp"
         android:layout_marginTop="@dimen/list_item_margin_top"

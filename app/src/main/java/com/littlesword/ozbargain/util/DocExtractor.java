@@ -44,6 +44,7 @@ public class DocExtractor {
     private static final String CLASS_VOTEUP = "voteup";
     private static final String CLASS_VOTEDOWN = "votedown";
     private static final String HEADER = "header2nd";//sub header, eg, "Electronic..."
+    private static final String EXPIRED_OOS = "tagger expired";
 
     //for comment
     private static final String COMMENT_LEVEL0 = "comment level0";
@@ -86,6 +87,17 @@ public class DocExtractor {
             for(Element r : right) {
                 Elements href = r.getElementsByAttributeValueContaining(CLASS, CLASS_FOX_CONTAINER);
                 Elements img = href.get(0).getElementsByTag(IMG);
+                Elements expiredOos = r.getElementsByAttributeValueContaining(CLASS, EXPIRED_OOS);
+                if(expiredOos != null && expiredOos.size() > 0){
+                    Element expoos = expiredOos.get(0);
+                    if(expoos != null){
+                        if(expoos.text().compareToIgnoreCase("expired") == 0 )
+                            b.isExpired = true;
+                        else
+                            b.isOutofstock = true;
+
+                    }
+                }
                 b.image = img.attr(SRC);
                 b.title = r.getElementsByClass(TITLE).get(0).getElementsByTag(LINK).get(0).text();
                 b.tag = r.getElementsByClass(LINKS).get(0).getElementsByTag(LINK).get(0).text();
