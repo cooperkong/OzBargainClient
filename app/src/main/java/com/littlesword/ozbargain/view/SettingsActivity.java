@@ -6,8 +6,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.littlesword.ozbargain.R;
-
 /**
  * Created by kongw1 on 2/12/15.
  */

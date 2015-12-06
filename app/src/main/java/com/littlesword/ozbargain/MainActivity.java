@@ -15,6 +15,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
+import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.view.CategoryFragment;
@@ -148,14 +149,14 @@ public class MainActivity extends AppCompatActivity
             isHomeSelected = false;
             uri = "/cat/" + item.getTitle().toString().replace("&","-").replace(" ","").toLowerCase();
         }
-//        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
-//                doc -> processDoc((Document) doc),
-//                this :: handlerError
-//        );
-        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad))).subscribe(
+        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
                 doc -> processDoc((Document) doc),
-                error -> handlerError(error)
+                this :: handlerError
         );
+//        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad))).subscribe(
+//                doc -> processDoc((Document) doc),
+//                error -> handlerError(error)
+//        );
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -179,8 +180,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Observable<Object> getNodeDoc(Bargain bargain) {
         showLoading();
-//        return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId);
-        return api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad3)));
+        return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId);
+//        return api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad3)));
     }
 
 }

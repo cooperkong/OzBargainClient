@@ -15,7 +15,6 @@ public class Bargain implements Serializable{
     public String submittedOn;
     public String tag;
     public String coupon;
-    public String originLink;
     public boolean isExpired;
     public boolean isOutofstock;
     public ArrayList<Comment> comments;

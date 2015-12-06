@@ -84,6 +84,10 @@ public class DocExtractor {
             Bargain b = new Bargain();
             Elements right = node.getElementsByAttributeValueContaining(CLASS, CLASS_N_RIGHT);
             b.nodeId = node.getElementsByTag(DIV).get(0).attr(ID).replace("node","node/");
+            Elements e = node.getElementsByAttributeValueContaining(CLASS, COUPON_CODE);
+            if(e != null && e.size() > 0) {
+                b.coupon = e.get(0).getElementsByTag(STRONG).get(0).text();
+            }
             for(Element r : right) {
                 Elements href = r.getElementsByAttributeValueContaining(CLASS, CLASS_FOX_CONTAINER);
                 Elements img = href.get(0).getElementsByTag(IMG);
@@ -154,8 +158,10 @@ public class DocExtractor {
         if(e == null)
             return null;
         else{
-            Element coupon = e.get(0).getElementsByTag(STRONG).get(0);
-            return coupon.text();
+            if(e.size() > 0) {
+                Element coupon = e.get(0).getElementsByTag(STRONG).get(0);
+                return coupon.text();
+            }else return null;
         }
     }
 }

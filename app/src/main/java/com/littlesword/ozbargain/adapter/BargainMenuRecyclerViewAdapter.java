@@ -55,7 +55,13 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         holder.mUpVote.setText(mBargains.get(position).upVote + " +");
         holder.mTag.setText(mBargains.get(position).tag);
         holder.mSubmitted.setText(mBargains.get(position).submittedOn.replace("on","").replace("-",""));
-
+        //coupon code
+        if(mBargains.get(position).coupon != null) {
+            holder.mCoupon.setVisibility(View.VISIBLE);
+            holder.mCoupon.setText(mBargains.get(position).coupon);
+        }
+        else
+            holder.mCoupon.setVisibility(View.GONE);
     }
 
     private String expireoutofstockText(Bargain bargain, TextView mExp) {
@@ -94,6 +100,8 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         TextView mSubmitted;
         @Bind(R.id.menu_item_tag)
         TextView mTag;
+        @Bind(R.id.menu_item_coupon)
+        TextView mCoupon;
 
         public ViewHolder(View v) {
             super(v);
