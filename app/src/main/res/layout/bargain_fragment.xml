@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/bargain_detail_title"
             android:textSize="16sp"
@@ -37,6 +37,13 @@
             android:textIsSelectable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <WebView
+            android:id="@+id/bargain_detail_description"
+            android:layout_below="@id/bargain_detail_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </WebView>
     </RelativeLayout>
 
     <ScrollView

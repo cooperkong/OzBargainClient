@@ -1,16 +1,15 @@
 package com.littlesword.ozbargain.view;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,6 +36,8 @@ public class BargainDetailFragment extends Fragment {
     SimpleDraweeView image;
     @Bind(R.id.comment_container)
     LinearLayout commentContainer;
+    @Bind(R.id.bargain_detail_description)
+    WebView mDescription;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class BargainDetailFragment extends Fragment {
                 }else{
                     coupon.setVisibility(View.GONE);
                 }
+                mDescription.setBackgroundColor(Color.TRANSPARENT);
+                mDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                mDescription.loadDataWithBaseURL(null, "<html><body>"+mBargain.description+"</body></html>", "text/html", "utf-8", null);
             }
         }
         return v;

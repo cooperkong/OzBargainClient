@@ -30,6 +30,7 @@ public class DocExtractor {
     private static final String CLASS = "class";
     private static final String SPAN = "span";
     private static final String STRONG = "strong";
+    private static final String ITEMPROP = "itemprop";
 
 
 //    custom classes
@@ -54,6 +55,8 @@ public class DocExtractor {
 
     //coupon code
     private static final String COUPON_CODE = "couponcode";
+    //description
+    private static final String BARGAIN_DESCRIPTION = "description";
 
     /**
      * return the list of categories.
@@ -163,5 +166,10 @@ public class DocExtractor {
                 return coupon.text();
             }else return null;
         }
+    }
+
+    public static String getDescription(Document document) {
+        Element e = document.getElementsByAttributeValueContaining(ITEMPROP, BARGAIN_DESCRIPTION).get(0);
+        return e.toString();
     }
 }

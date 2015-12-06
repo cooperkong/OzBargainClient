@@ -71,6 +71,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         //get to the bargain node details page.
         bargain.comments = DocExtractor.getComments(document);
         bargain.coupon = DocExtractor.getCoupon(document);
+        bargain.description = DocExtractor.getDescription(document);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
                 .addToBackStack("detail_fragment")

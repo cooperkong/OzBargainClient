@@ -10,6 +10,7 @@ public class Bargain implements Serializable{
     public String nodeId;
     public String image;
     public String title;
+    public String description;
     public String upVote;
     public String downVote;
     public String submittedOn;
