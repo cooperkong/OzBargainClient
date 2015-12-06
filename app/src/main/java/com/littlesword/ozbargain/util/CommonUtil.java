@@ -1,5 +1,12 @@
 package com.littlesword.ozbargain.util;
 
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
+
+import com.littlesword.ozbargain.R;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,5 +48,12 @@ public class CommonUtil {
 
         }
         return outputStream.toString();
+    }
+
+    public static Drawable getTintedIcon(Resources res) {
+        Drawable shoppingCart = res.getDrawable(R.mipmap.ic_shopping_cart_black_12dp);
+        Drawable wrapDrawable = DrawableCompat.wrap(shoppingCart);
+        DrawableCompat.setTint(wrapDrawable, Color.parseColor("#aaaaaa"));
+        return wrapDrawable;
     }
 }

@@ -1,5 +1,7 @@
 package com.littlesword.ozbargain.adapter;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -27,12 +29,16 @@ import butterknife.ButterKnife;
  */
 public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<BargainMenuRecyclerViewAdapter.ViewHolder>{
 
+    private final Context mContext;
+    private final Drawable mShoppingIcon;
     private ArrayList<Bargain> mBargains;
     private onBargainItemClicklistener listener;
 
-    public BargainMenuRecyclerViewAdapter(ArrayList<Bargain> bargains, CategoryFragment listener){
+    public BargainMenuRecyclerViewAdapter(Context context, ArrayList<Bargain> bargains, CategoryFragment listener){
         this.mBargains = bargains;
         this.listener = listener;
+        this.mContext = context;
+        this.mShoppingIcon = CommonUtil.getTintedIcon(mContext.getResources());
     }
 
     @Override
@@ -58,6 +64,8 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
         //coupon code
         if(mBargains.get(position).coupon != null) {
             holder.mCoupon.setVisibility(View.VISIBLE);
+            holder.mCoupon.setCompoundDrawablesWithIntrinsicBounds(mShoppingIcon, null, null, null);
+
             holder.mCoupon.setText(mBargains.get(position).coupon);
         }
         else

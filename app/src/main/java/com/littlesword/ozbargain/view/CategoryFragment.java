@@ -46,7 +46,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
         ArrayList<Bargain> list = DocExtractor.getBargainItems(mainInterface.getHomeDoc());
-        mAdapter = new BargainMenuRecyclerViewAdapter(list, this);
+        mAdapter = new BargainMenuRecyclerViewAdapter(getContext(), list, this);
         updateTimestamp(list);
         mRecycleView.setAdapter(mAdapter);
         return v;

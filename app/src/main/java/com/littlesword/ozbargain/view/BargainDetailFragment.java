@@ -53,10 +53,7 @@ public class BargainDetailFragment extends Fragment {
                 }
                 if(mBargain.coupon != null){
                     coupon.setText(mBargain.coupon);
-                    Drawable shoppingCart = getResources().getDrawable(R.mipmap.ic_shopping_cart_black_12dp);
-                    Drawable wrapDrawable = DrawableCompat.wrap(shoppingCart);
-                    DrawableCompat.setTint(wrapDrawable, Color.parseColor("#aaaaaa"));
-                    coupon.setCompoundDrawablesWithIntrinsicBounds(wrapDrawable, null, null, null);
+                    coupon.setCompoundDrawablesWithIntrinsicBounds(CommonUtil.getTintedIcon(getResources()), null, null, null);
                 }else{
                     coupon.setVisibility(View.GONE);
                 }
