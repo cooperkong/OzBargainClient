@@ -1,5 +1,6 @@
 package com.littlesword.ozbargain.view;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,10 +19,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.model.Comment;
+import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.CommonUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by kongw1 on 25/11/15.
@@ -38,6 +42,12 @@ public class BargainDetailFragment extends Fragment {
     LinearLayout commentContainer;
     @Bind(R.id.bargain_detail_description)
     WebView mDescription;
+    @Bind(R.id.bargain_detail_comment_btn)
+    Button mComment;
+    @Bind(R.id.bargain_detail_goto_btn)
+    Button mGoto;
+    private Bargain mBargain;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +55,7 @@ public class BargainDetailFragment extends Fragment {
         ButterKnife.bind(this, v);
         Bundle bundle = getArguments();
         if(bundle != null){
-            Bargain mBargain = (Bargain) bundle.getSerializable(BARGAIN_DETAIL_KEY);
+            mBargain = (Bargain) bundle.getSerializable(BARGAIN_DETAIL_KEY);
             if(mBargain != null) {
                 title.setText(Html.fromHtml(CommonUtil.applyColorToString(mBargain.title)));
                 image.setImageURI(Uri.parse(mBargain.image));
@@ -64,6 +74,24 @@ public class BargainDetailFragment extends Fragment {
             }
         }
         return v;
+    }
+
+    @OnClick(R.id.bargain_detail_comment_btn) void onCommentBtnClicked(){
+        if(mDescription.getVisibility() == View.VISIBLE) {
+            mDescription.setVisibility(View.GONE);
+            commentContainer.setVisibility(View.VISIBLE);
+            mComment.setText(R.string.description_btn);
+        }else{
+            mDescription.setVisibility(View.VISIBLE);
+            commentContainer.setVisibility(View.GONE);
+            mComment.setText(R.string.comment_btn);
+
+        }
+    }
+
+    @OnClick(R.id.bargain_detail_goto_btn) void onGotoBtnClicked(){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(CatUrls.BASE_URL
+                + mBargain.nodeId.replace("node",CatUrls.GOTO))));
     }
 
 

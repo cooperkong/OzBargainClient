@@ -6,6 +6,7 @@ package com.littlesword.ozbargain.util;
  */
 public interface CatUrls {
     String BASE_URL = "https://www.ozbargain.com.au";
+    String GOTO = "/goto";
 
     String ELECTRONICS = "/cat/electrical-electronics";
     String FOOD = "/cat/food-grocery";

@@ -12,4 +12,5 @@
     <string name="pref_notification_title2">Turn on notification</string>
     <string name="goto_btn">Go to deal</string>
     <string name="comment_btn">Comments</string>
+    <string name="description_btn">DESCRIPTION</string>
 </resources>
