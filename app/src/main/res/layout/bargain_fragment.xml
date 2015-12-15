@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"/>
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/bargain_detail_image"
+            android:layout_marginTop="@dimen/list_item_margin_top"
             android:layout_below="@id/bargain_detail_title"
             fresco:placeholderImage="@drawable/ic_image_holder"
             android:layout_width="96dp"
@@ -41,9 +42,39 @@
         <WebView
             android:id="@+id/bargain_detail_description"
             android:layout_below="@id/bargain_detail_image"
+            android:layout_above="@+id/bargain_detail_comment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </WebView>
+
+        <RelativeLayout
+            android:id="@id/bargain_detail_comment_container"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="@dimen/list_item_margin_top"
+            android:paddingTop="@dimen/list_item_margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_alignParentLeft="true"
+                android:id="@+id/bargain_detail_comment_btn"
+                android:layout_width="96dp"
+                android:layout_height="36dp"
+                android:text="@string/comment_btn"
+                android:textStyle="bold"
+                android:textColor="@drawable/bargain_btn_text"
+                android:background="@drawable/bargain_btn"/>
+
+            <Button
+                android:id="@+id/bargain_detail_goto_btn"
+                android:layout_alignParentRight="true"
+                android:layout_width="96dp"
+                android:layout_height="36dp"
+                android:text="@string/goto_btn"
+                android:textStyle="bold"
+                android:textColor="@drawable/bargain_btn_text"
+                android:background="@drawable/bargain_btn"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <ScrollView

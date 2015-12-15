@@ -10,4 +10,6 @@
     <string name="pref_notification_title">Notifications</string>
     <string name="pref_notification_summary">Notify me when new bargain is detected</string>
     <string name="pref_notification_title2">Turn on notification</string>
+    <string name="goto_btn">Go to deal</string>
+    <string name="comment_btn">Comments</string>
 </resources>
