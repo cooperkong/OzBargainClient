@@ -4,7 +4,7 @@
         android:title="@string/pref_notification_title"
         android:key="pref_key_storage_settings">
     <CheckBoxPreference
-        android:key="pref_sync"
+        android:key="pref_notification"
         android:title="@string/pref_notification_title2"
         android:summary="@string/pref_notification_summary"
         android:defaultValue="true" />

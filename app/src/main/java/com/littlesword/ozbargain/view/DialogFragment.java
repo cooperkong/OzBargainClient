@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.littlesword.ozbargain.R;
 
@@ -30,4 +31,5 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         return dialog;
     }
+
 }
