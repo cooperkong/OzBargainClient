@@ -1,7 +1,9 @@
 package com.littlesword.ozbargain.view;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ public class SettingsActivity extends AppCompatActivity{
                 .commit();
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override

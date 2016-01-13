@@ -13,4 +13,8 @@
     <string name="goto_btn">Go to deal</string>
     <string name="comment_btn">Comments</string>
     <string name="description_btn">DESCRIPTION</string>
+    <string name="pref_notification_title3">Notification Interval</string>
+    <string name="pref_notification_summary2">How often you would like to receive the notifications.</string>
+    <string name="pref_notification_interval_dialog_title">Interval</string>
+    <string name="pref_notification_interval_default">15</string>
 </resources>
