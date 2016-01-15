@@ -10,7 +10,7 @@
             android:defaultValue="true" />
         <ListPreference
             android:dependency="pref_notification"
-            android:key="pref_syncConnectionType"
+            android:key="pref_interval_notification"
             android:title="@string/pref_notification_title3"
             android:summary="@string/pref_notification_summary2"
             android:dialogTitle="@string/pref_notification_interval_dialog_title"

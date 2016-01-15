@@ -1,10 +1,8 @@
 package com.littlesword.ozbargain;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,13 +15,11 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
-import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.view.CategoryFragment;
 import com.littlesword.ozbargain.view.DialogFragment;
 import com.littlesword.ozbargain.view.SettingsActivity;
-import com.littlesword.ozbargain.view.SettingsFragment;
 
 import org.jsoup.nodes.Document;
 
@@ -62,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         selectHome();
-        BargainFetcher.scheduleTask(this);
+        BargainFetcher.scheduleTask(this, 10000);
     }
 
     private void selectHome() {

@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
  */
 public class BargainFetcher {
 
-    public static void scheduleTask(Context context){
+    public static void scheduleTask(Context context, long interval){
 
         // time at which alarm will be scheduled here alarm is scheduled at 1 day from current time,
         // we fetch  the current time in milliseconds and added 1 day time
