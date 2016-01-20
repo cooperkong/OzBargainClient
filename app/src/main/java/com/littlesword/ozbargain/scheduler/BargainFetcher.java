@@ -17,7 +17,7 @@ public class BargainFetcher {
         // time at which alarm will be scheduled here alarm is scheduled at 1 day from current time,
         // we fetch  the current time in milliseconds and added 1 day time
         // i.e. 24*60*60*1000= 86,400,000   milliseconds in a day
-        Long time = new GregorianCalendar().getTimeInMillis()+10000;
+        Long time = new GregorianCalendar().getTimeInMillis()+interval;
 
         // create an Intent and set the class which will execute when Alarm triggers, here we have
         // given AlarmReciever in the Intent, the onRecieve() method of this class will execute when
@@ -30,6 +30,6 @@ public class BargainFetcher {
 
         //set the alarm for particular time
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time,
-                10000, PendingIntent.getBroadcast(context, 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
+                interval, PendingIntent.getBroadcast(context, 1, intentAlarm, PendingIntent.FLAG_CANCEL_CURRENT));
     }
 }

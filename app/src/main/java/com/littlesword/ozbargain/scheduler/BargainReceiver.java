@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
@@ -47,10 +49,17 @@ public class BargainReceiver extends BroadcastReceiver {
             }
         }
         APIImp api = new APIImp();
-        api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
-                doc -> processDoc((Document) doc, context),
-                error -> handlerError(error)
-        );
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if(isConnected)
+            api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
+                    doc -> processDoc((Document) doc, context),
+                    this::handlerError
+            );
 //        api.getMainDocumentAsyncString(readTextFile(R.raw.sad2, context)).subscribe(
 //                doc -> processDoc((Document) doc, context),
 //                error -> handlerError(error)
@@ -88,7 +97,7 @@ public class BargainReceiver extends BroadcastReceiver {
 
             int mNotificationId = 001;
             // Gets an instance of the NotificationManager service
-            Notification notification = NotificationUtil.build(context,"New Deal!",list.get(0).title);
+            Notification notification = NotificationUtil.build(context,"New Deal!",list.get(0).title, list.get(0));
             Intent deleteIntent = new Intent(context, BargainReceiver.class);
             deleteIntent.setAction(NOTIFICATION_DISSMISSED);
             deleteIntent.putExtra(DISSMISSED_TIMESTAMP, list.get(0).submittedOn);

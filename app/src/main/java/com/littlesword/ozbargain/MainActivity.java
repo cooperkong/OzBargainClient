@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,8 +16,10 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
+import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
+import com.littlesword.ozbargain.view.BargainDetailFragment;
 import com.littlesword.ozbargain.view.CategoryFragment;
 import com.littlesword.ozbargain.view.DialogFragment;
 import com.littlesword.ozbargain.view.SettingsActivity;
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity
     private static final String DIALOG_TAG = "loading_dialog_tag";;
     private List<String> categories = new ArrayList<>();
     private boolean isHomeSelected;
+    private static final String TAG = "MainActivity";
+    public static final String NOTIFICATION_EXTRA = "notification_action";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         selectHome();
         BargainFetcher.scheduleTask(this, 10000);
+
     }
 
     private void selectHome() {
@@ -97,6 +103,16 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new CategoryFragment())
                 .commit();
+        //in case MainActivity is opened from notification
+        Bargain bargain = null;
+        if(getIntent() != null)
+            bargain = (Bargain) getIntent().getSerializableExtra(NOTIFICATION_EXTRA);
+        if(bargain != null){
+            final Bargain finalBargain = bargain;
+            api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(
+                    document -> processDocument((Document) document, finalBargain)
+            );
+        }
     }
 
     @Override
@@ -147,14 +163,14 @@ public class MainActivity extends AppCompatActivity
             isHomeSelected = false;
             uri = "/cat/" + item.getTitle().toString().replace("&","-").replace(" ","").toLowerCase();
         }
-//        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
-//                doc -> processDoc((Document) doc),
-//                this :: handlerError
-//        );
-        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad))).subscribe(
+        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
                 doc -> processDoc((Document) doc),
-                error -> handlerError(error)
+                this :: handlerError
         );
+//        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad))).subscribe(
+//                doc -> processDoc((Document) doc),
+//                error -> handlerError(error)
+//        );
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -176,10 +192,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public Observable<Object> getNodeDoc(Bargain bargain) {
+    public Observable<Object> getNodeDoc(String nodeId) {
         showLoading();
-//        return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId);
-        return api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad3)));
+        return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + nodeId);
+//        return api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad3)));
     }
 
+    private void processDocument(Document document, Bargain bargain) {
+//        mainInterface.dismissLoading();
+        //get to the bargain node details page.
+        bargain.comments = DocExtractor.getComments(document);
+        bargain.coupon = DocExtractor.getCoupon(document);
+        bargain.description = DocExtractor.getDescription(document);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
+//                .addToBackStack("detail_fragment")
+                .commit();
+    }
 }
