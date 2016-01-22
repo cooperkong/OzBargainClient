@@ -42,6 +42,8 @@
 
         <WebView
             android:id="@+id/bargain_detail_description"
+            android:paddingLeft="-10dp"
+            android:paddingRight="-10dp"
             android:layout_below="@id/bargain_detail_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -55,7 +57,6 @@
                 android:id="@+id/comment_container"
                 android:orientation="vertical"
                 android:visibility="gone"
-                android:padding="@dimen/list_item_bottom_space"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

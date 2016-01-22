@@ -4,6 +4,8 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.littlesword.ozbargain.MainActivity;
@@ -20,6 +22,8 @@ public class NotificationUtil {
 
     public static Notification build(Context context, String title, String content, Bargain bargain){
         Intent resultIntent = new Intent(context, MainActivity.class);
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         resultIntent.putExtra(MainActivity.NOTIFICATION_EXTRA, bargain);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
@@ -32,6 +36,7 @@ public class NotificationUtil {
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.mipmap.ic_notification)
                         .setContentTitle(title)
+                        .setSound(soundUri)
                         .setContentText(content)
                         .setAutoCancel(true)
                         .setContentIntent(resultPendingIntent);

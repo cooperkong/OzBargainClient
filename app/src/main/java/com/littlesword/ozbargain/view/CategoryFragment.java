@@ -54,7 +54,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 
     private void updateTimestamp(ArrayList<Bargain> list) {
         SharedPreferences.Editor mPref = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE).edit();
-        mPref.putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
+        mPref.putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, list.get(0).submittedOn);
         mPref.apply();
     }
 

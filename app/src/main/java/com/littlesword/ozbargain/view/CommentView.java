@@ -1,6 +1,7 @@
 package com.littlesword.ozbargain.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,7 +32,8 @@ public class CommentView extends LinearLayout {
 
     private View contentView() {
         TextView s = new TextView(mContext);
-        s.setTextSize(12);
+        s.setTextSize(13);
+        s.setTextColor(Color.BLACK);
         s.setText(content);
         return s;
     }
