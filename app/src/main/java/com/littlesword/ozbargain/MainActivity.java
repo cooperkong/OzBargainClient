@@ -1,6 +1,8 @@
 package com.littlesword.ozbargain;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,17 +10,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.gson.Gson;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
 import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
+import com.littlesword.ozbargain.util.NotificationUtil;
 import com.littlesword.ozbargain.view.BargainDetailFragment;
 import com.littlesword.ozbargain.view.CategoryFragment;
 import com.littlesword.ozbargain.view.DialogFragment;
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity
     private boolean isHomeSelected;
     private static final String TAG = "MainActivity";
     public static final String NOTIFICATION_EXTRA = "notification_action";
+    public static final String CATEGORIES = "categories";
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +68,7 @@ public class MainActivity extends AppCompatActivity
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         selectHome();
-        BargainFetcher.scheduleTask(this, 10000);
+        BargainFetcher.scheduleTask(this, 10000);//TODO
 
     }
 
@@ -95,6 +100,9 @@ public class MainActivity extends AppCompatActivity
                         categories.add(s);
                         mNavigationView.getMenu().add(s);
                     }
+                    //update settings for selecting category
+                    //in case there is an update in categories, eg: Gaming is added/removed
+                    updateSettingsCategory(categories);
                 }//add category to menu item.
         );
         document = doc;
@@ -110,9 +118,15 @@ public class MainActivity extends AppCompatActivity
         if(bargain != null){
             final Bargain finalBargain = bargain;
             api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(
-                    document -> processDocument((Document) document, finalBargain)
+                    document -> processNotificationAction((Document) document, finalBargain)
             );
         }
+    }
+
+    private void updateSettingsCategory(List<String> categories) {
+        SharedPreferences.Editor pref = getSharedPreferences(NotificationUtil.SHARED_PREF, Context.MODE_PRIVATE).edit();
+        pref.putString(CATEGORIES, gson.toJson(categories));
+        pref.apply();
     }
 
     @Override
@@ -163,14 +177,14 @@ public class MainActivity extends AppCompatActivity
             isHomeSelected = false;
             uri = "/cat/" + item.getTitle().toString().replace("&","-").replace(" ","").toLowerCase();
         }
-        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
-                doc -> processDoc((Document) doc),
-                this :: handlerError
-        );
-//        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad))).subscribe(
+//        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
 //                doc -> processDoc((Document) doc),
-//                error -> handlerError(error)
+//                this :: handlerError
 //        );
+        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad))).subscribe(
+                doc -> processDoc((Document) doc),
+                error -> handlerError(error)
+        );
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -198,7 +212,7 @@ public class MainActivity extends AppCompatActivity
 //        return api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad3)));
     }
 
-    private void processDocument(Document document, Bargain bargain) {
+    private void processNotificationAction(Document document, Bargain bargain) {
 //        mainInterface.dismissLoading();
         //get to the bargain node details page.
         bargain.comments = DocExtractor.getComments(document);
@@ -206,7 +220,7 @@ public class MainActivity extends AppCompatActivity
         bargain.description = DocExtractor.getDescription(document);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
-//                .addToBackStack("detail_fragment")
+                .addToBackStack("detail_fragment")
                 .commit();
     }
 }

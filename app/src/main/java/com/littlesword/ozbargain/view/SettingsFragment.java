@@ -57,7 +57,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
         if(key.equals(INTERVAL_NOTIFICATION)){
             long val = Long.parseLong(sharedPreferences.getString(key, DEFAULT_INTERVAL+""));
-
             Intent intent = new Intent(getActivity(), BargainReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);

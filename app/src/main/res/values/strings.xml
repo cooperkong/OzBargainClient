@@ -16,5 +16,10 @@
     <string name="pref_notification_title3">Notification Interval</string>
     <string name="pref_notification_summary2">How often you would like to receive the notifications.</string>
     <string name="pref_notification_interval_dialog_title">Interval</string>
+    <string name="pref_notification_category_dialog_title">Category</string>
     <string name="pref_notification_interval_default">15</string>
+    <string name="notification_new_deal">New deal!</string>
+    <string name="pref_notification_title4">Favorite Category</string>
+    <string name="pref_notification_summary3">Will receive notification only for these categories</string>
+
 </resources>

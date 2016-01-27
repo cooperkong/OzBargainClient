@@ -10,9 +10,11 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.util.CatUrls;
+import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
 import com.littlesword.ozbargain.util.TimeUtil;
@@ -56,34 +58,16 @@ public class BargainReceiver extends BroadcastReceiver {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         if(isConnected)
-            api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
-                    doc -> processDoc((Document) doc, context),
-                    this::handlerError
-            );
-//        api.getMainDocumentAsyncString(readTextFile(R.raw.sad2, context)).subscribe(
-//                doc -> processDoc((Document) doc, context),
-//                error -> handlerError(error)
-//        );
+//            api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
+//                    doc -> processDoc((Document) doc, context),
+//                    this::handlerError
+//            );
+        api.getMainDocumentAsyncString(CommonUtil.readTextFile(context.getResources().openRawResource(R.raw.sad2))).subscribe(
+                doc -> processDoc((Document) doc, context),
+                error -> handlerError(error)
+        );
     }
 
-    public String readTextFile(int resId, Context context) {
-        InputStream inputStream = context.getResources().openRawResource(resId); // getting XML
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        byte buf[] = new byte[1024];
-        int len;
-        try {
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
-            }
-            outputStream.close();
-            inputStream.close();
-        } catch (IOException e) {
-
-        }
-        return outputStream.toString();
-    }
 
     private void handlerError(Throwable error) {
 
@@ -95,9 +79,9 @@ public class BargainReceiver extends BroadcastReceiver {
         String lastBargainTimestamp = mPref.getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
         if(TimeUtil.isNew(lastBargainTimestamp, list.get(0).submittedOn)) {
 
-            int mNotificationId = 001;
+            int mNotificationId = 1;
             // Gets an instance of the NotificationManager service
-            Notification notification = NotificationUtil.build(context,"New Deal!",list.get(0).title, list.get(0));
+            Notification notification = NotificationUtil.build(context,context.getString(R.string.notification_new_deal),list.get(0).title, list.get(0));
             Intent deleteIntent = new Intent(context, BargainReceiver.class);
             deleteIntent.setAction(NOTIFICATION_DISSMISSED);
             deleteIntent.putExtra(DISSMISSED_TIMESTAMP, list.get(0).submittedOn);

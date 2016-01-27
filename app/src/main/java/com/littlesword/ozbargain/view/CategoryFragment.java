@@ -15,7 +15,11 @@ import com.littlesword.ozbargain.adapter.BargainMenuRecyclerViewAdapter;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
+import com.littlesword.ozbargain.util.TimeUtil;
+
 import org.jsoup.nodes.Document;
+
+import java.sql.Time;
 import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,9 +57,14 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     }
 
     private void updateTimestamp(ArrayList<Bargain> list) {
-        SharedPreferences.Editor mPref = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE).edit();
-        mPref.putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, list.get(0).submittedOn);
-        mPref.apply();
+
+        String savedLastTimestamp = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE)
+                .getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
+        if(TimeUtil.isNew(savedLastTimestamp, list.get(0).submittedOn)) {
+            SharedPreferences.Editor mPref = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE).edit();
+            mPref.putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, list.get(0).submittedOn);
+            mPref.apply();
+        }
     }
 
     @Override

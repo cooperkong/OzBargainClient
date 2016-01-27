@@ -16,6 +16,14 @@
             android:dialogTitle="@string/pref_notification_interval_dialog_title"
             android:entries="@array/pref_syncConnectionTypes_entries"
             android:entryValues="@array/pref_syncConnectionTypes_values"
-            android:defaultValue="@string/pref_notification_interval_default" />
+            android:defaultValue="@array/pref_interval_list_default" />
+
+        <com.littlesword.ozbargain.view.CustomListPreference
+            android:dependency="pref_notification"
+            android:key="pref_category_favorite"
+            android:title="@string/pref_notification_title4"
+            android:summary="@string/pref_notification_summary3"
+            android:dialogTitle="@string/pref_notification_category_dialog_title"
+            android:defaultValue="@array/pref_interval_list_default" />
     </PreferenceCategory>
 </PreferenceScreen>
