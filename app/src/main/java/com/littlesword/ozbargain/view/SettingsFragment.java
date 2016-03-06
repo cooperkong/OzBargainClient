@@ -19,8 +19,8 @@ import com.littlesword.ozbargain.scheduler.BargainReceiver;
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String PREF_NOTIFICATION = "pref_notification";
-    private static final String INTERVAL_NOTIFICATION = "pref_interval_notification";
-    private static final long DEFAULT_INTERVAL = 15 * 60 * 1000;//default to 15 mins interval
+    public static final String INTERVAL_NOTIFICATION = "pref_interval_notification";
+    public static final long DEFAULT_INTERVAL = 15 * 60 * 1000;//default to 15 mins interval
     private static final String TAG = "SettingsFragment";
     @Override
     public void onCreate(Bundle savedInstanceState) {

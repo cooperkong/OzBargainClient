@@ -12,6 +12,8 @@ import com.littlesword.ozbargain.MainActivity;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Created by kongw1 on 19/11/15.
  */
@@ -19,6 +21,7 @@ public class NotificationUtil {
 
     public static final String LATEST_BARGAIN_TIMESTAMP = "latest_timestamp";
     public static final String SHARED_PREF = "ob_sharedpref";
+    private final static AtomicInteger c = new AtomicInteger(0);
 
     public static Notification build(Context context, String title, String content, Bargain bargain){
         Intent resultIntent = new Intent(context, MainActivity.class);
@@ -41,5 +44,9 @@ public class NotificationUtil {
                         .setAutoCancel(true)
                         .setContentIntent(resultPendingIntent);
         return mBuilder.build();
+    }
+
+    public static int generateId() {
+            return c.incrementAndGet();
     }
 }

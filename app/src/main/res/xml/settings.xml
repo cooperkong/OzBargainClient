@@ -16,7 +16,7 @@
             android:dialogTitle="@string/pref_notification_interval_dialog_title"
             android:entries="@array/pref_syncConnectionTypes_entries"
             android:entryValues="@array/pref_syncConnectionTypes_values"
-            android:defaultValue="@array/pref_interval_list_default" />
+            android:defaultValue="15" />
 
         <com.littlesword.ozbargain.view.CustomListPreference
             android:dependency="pref_notification"

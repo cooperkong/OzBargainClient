@@ -79,7 +79,7 @@ public class BargainReceiver extends BroadcastReceiver {
         String lastBargainTimestamp = mPref.getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
         if(TimeUtil.isNew(lastBargainTimestamp, list.get(0).submittedOn)) {
 
-            int mNotificationId = 1;
+            int mNotificationId = NotificationUtil.generateId();
             // Gets an instance of the NotificationManager service
             Notification notification = NotificationUtil.build(context,context.getString(R.string.notification_new_deal),list.get(0).title, list.get(0));
             Intent deleteIntent = new Intent(context, BargainReceiver.class);

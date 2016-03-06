@@ -43,9 +43,5 @@ public class CustomListPreference extends MultiSelectListPreference {
         setEntryValues(myEntryValues);
     }
 
-    private String[] initEntries(){
-
-        return myEntryValues;
-    }
 
 }

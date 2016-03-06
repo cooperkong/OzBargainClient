@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,6 +27,7 @@ import com.littlesword.ozbargain.view.BargainDetailFragment;
 import com.littlesword.ozbargain.view.CategoryFragment;
 import com.littlesword.ozbargain.view.DialogFragment;
 import com.littlesword.ozbargain.view.SettingsActivity;
+import com.littlesword.ozbargain.view.SettingsFragment;
 
 import org.jsoup.nodes.Document;
 
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         selectHome();
-        BargainFetcher.scheduleTask(this, 10000);//TODO
+        BargainFetcher.scheduleTask(this, getIntervalFromPref());
 
     }
 
@@ -222,5 +224,11 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
                 .addToBackStack("detail_fragment")
                 .commit();
+    }
+
+    public long getIntervalFromPref() {
+        long val = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(SettingsFragment.INTERVAL_NOTIFICATION, SettingsFragment.DEFAULT_INTERVAL+""));
+        return val;
     }
 }
