@@ -2,5 +2,6 @@ test:
   override:
     - ./gradlew assembleDebug
 # Add some environment variables
-  environment:
-    JAVA8_HOME: oraclejdk8
+machine:
+    java:
+        version: oraclejdk8
