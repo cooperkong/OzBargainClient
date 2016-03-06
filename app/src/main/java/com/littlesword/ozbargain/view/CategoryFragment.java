@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by kongw1 on 14/11/15.
@@ -68,9 +69,13 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     }
 
     @Override
-    public void onBargainClicked(Bargain bargain) {
-        mainInterface.getNodeDoc(bargain.nodeId).subscribe(
-                document -> processDocument((Document) document, bargain)
+    public void onBargainClicked(final Bargain bargain) {
+        mainInterface.getNodeDoc(bargain.nodeId).subscribe(new Action1<Object>() {
+               @Override
+               public void call(Object document) {
+                   processDocument((Document) document, bargain);
+               }
+           }
         );
 
     }
@@ -90,7 +95,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 
     public interface MainInterface{
         Document getHomeDoc();
-        Observable<Object> getNodeDoc(String nodeId);
+        Observable<Document> getNodeDoc(String nodeId);
         void dismissLoading();
 
     }

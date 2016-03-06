@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import rx.Subscriber;
+
 /**
  * Created by kongw1 on 18/11/15.
  */
@@ -34,7 +36,7 @@ public class BargainReceiver extends BroadcastReceiver {
     private static final String DISSMISSED_TIMESTAMP = "dismissed_timestamp";
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         if(intent != null && intent.getAction() != null){
             if(intent.getAction().compareToIgnoreCase(NOTIFICATION_DISSMISSED) == 0){
                 //user dismiss the notification
@@ -62,10 +64,24 @@ public class BargainReceiver extends BroadcastReceiver {
 //                    doc -> processDoc((Document) doc, context),
 //                    this::handlerError
 //            );
-        api.getMainDocumentAsyncString(CommonUtil.readTextFile(context.getResources().openRawResource(R.raw.sad2))).subscribe(
-                doc -> processDoc((Document) doc, context),
-                error -> handlerError(error)
-        );
+        api.getMainDocumentAsyncString(CommonUtil.readTextFile(context.getResources().openRawResource(R.raw.sad2)))
+                .subscribe(new Subscriber<Object>() {
+                               @Override
+                               public void onCompleted() {
+
+                               }
+
+                               @Override
+                               public void onError(Throwable e) {
+                                   handlerError(e);
+                               }
+
+                               @Override
+                               public void onNext(Object o) {
+                                   processDoc((Document) o, context);
+                               }
+                           }
+                );
     }
 
 

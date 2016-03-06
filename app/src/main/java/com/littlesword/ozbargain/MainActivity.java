@@ -37,6 +37,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, CategoryFragment.MainInterface {
@@ -97,15 +99,18 @@ public class MainActivity extends AppCompatActivity
 
     private void processDoc(Document doc) {
         DocExtractor.getCategories(doc).subscribe(
-                s -> {
-                    if (!categories.contains(s) && isHomeSelected) {
-                        categories.add(s);
-                        mNavigationView.getMenu().add(s);
+                new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        if (!categories.contains(s) && isHomeSelected) {
+                            categories.add(s);
+                            mNavigationView.getMenu().add(s);
+                        }
+                        //update settings for selecting category
+                        //in case there is an update in categories, eg: Gaming is added/removed
+                        updateSettingsCategory(categories);
                     }
-                    //update settings for selecting category
-                    //in case there is an update in categories, eg: Gaming is added/removed
-                    updateSettingsCategory(categories);
-                }//add category to menu item.
+                }
         );
         document = doc;
         dismissLoading();
@@ -119,8 +124,12 @@ public class MainActivity extends AppCompatActivity
             bargain = (Bargain) getIntent().getSerializableExtra(NOTIFICATION_EXTRA);
         if(bargain != null){
             final Bargain finalBargain = bargain;
-            api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(
-                    document -> processNotificationAction((Document) document, finalBargain)
+            api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(new Action1<Object>() {
+                    @Override
+                    public void call(Object o) {
+                        processNotificationAction((Document) document, finalBargain);
+                    }
+                }
             );
         }
     }
@@ -183,9 +192,23 @@ public class MainActivity extends AppCompatActivity
 //                doc -> processDoc((Document) doc),
 //                this :: handlerError
 //        );
-        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad))).subscribe(
-                doc -> processDoc((Document) doc),
-                error -> handlerError(error)
+        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad)))
+                .subscribe(new Subscriber<Object>() {
+                 @Override
+                 public void onCompleted() {
+                 }
+
+                 @Override
+                 public void onError(Throwable e) {
+                     handlerError(e);
+                 }
+
+                 @Override
+                 public void onNext(Object o) {
+                     processDoc((Document) o);
+
+                 }
+             }
         );
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
@@ -208,7 +231,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public Observable<Object> getNodeDoc(String nodeId) {
+    public Observable<Document> getNodeDoc(String nodeId) {
         showLoading();
         return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + nodeId);
 //        return api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad3)));

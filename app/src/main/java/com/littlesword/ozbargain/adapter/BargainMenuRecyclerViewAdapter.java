@@ -49,9 +49,14 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.itemView.setOnClickListener(
-                l -> listener.onBargainClicked(mBargains.get(position))
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onBargainClicked(mBargains.get(position));
+                    }
+                }
         );
         holder.mImage.setImageURI(Uri.parse(mBargains.get(position).image));
         String desc = mBargains.get(position).title;

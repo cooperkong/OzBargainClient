@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func0;
 import rx.schedulers.Schedulers;
 
 /**
@@ -40,12 +41,30 @@ public final class APIImp implements APIInterface{
         return doc;
     }
 
-    public Observable<Object> getMainDocumentAsyncString(String url) {
-        return Observable.defer(() -> Observable.just(getMainDocumentString(url))).compose(applySchedulers());
+    public Observable<Object> getMainDocumentAsyncString(final String url) {
+        return Observable.defer(new Func0<Observable<Object>>() {
+            @Override
+            public Observable<Object> call() {
+                return Observable.just(getMainDocumentString(url)).compose(applySchedulers());
+            }
+        });
     }
 
-    public Observable<Object> getMainDocumentAsync(String url) {
-        return Observable.defer(() -> Observable.just(getMainDocument(url))).compose(applySchedulers());
+    public Observable<Document> getMainDocumentAsync(final String url) {
+        return applySchedulers(Observable.defer(new Func0<Observable<Document>>() {
+            @Override
+            public Observable<Document> call() {
+                return Observable.just(getMainDocument(url))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        }));
+//        return Observable.defer(new Func0<Observable<Object>>() {
+//            @Override
+//            public Observable<Object> call() {
+//                return .compose(applySchedulers());
+//            }
+//        });
     }
 
     /**
@@ -54,7 +73,17 @@ public final class APIImp implements APIInterface{
      * @return
      */
     <T> Observable.Transformer<T, T> applySchedulers() {
-        return observable -> observable.subscribeOn(Schedulers.io())
+        return new Observable.Transformer<T, T>() {
+            @Override
+            public Observable<T> call(Observable<T> tObservable) {
+                return tObservable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
+
+    <T> Observable<T> applySchedulers(Observable<T> observable) {
+        return observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

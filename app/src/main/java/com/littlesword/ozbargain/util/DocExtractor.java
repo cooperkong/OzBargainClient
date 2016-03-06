@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import rx.Observable;
@@ -115,11 +116,12 @@ public class DocExtractor {
             ret.add(b);
 
         }
-        Collections.sort(ret,
-                (lhs, rhs) -> {
-                    return rhs.submittedOn.compareTo(lhs.submittedOn);
-                }
-        );
+        Collections.sort(ret, new Comparator<Bargain>() {
+            @Override
+            public int compare(Bargain lhs, Bargain rhs) {
+                return rhs.submittedOn.compareTo(lhs.submittedOn);
+            }
+        });
         return ret;
     }
 
