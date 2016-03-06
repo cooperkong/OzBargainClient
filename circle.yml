@@ -1,6 +1,8 @@
 test:
   override:
     - ./gradlew test -PdisablePreDex
+    # copy test results
+    - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
 
 # Add some environment variables
 machine:
