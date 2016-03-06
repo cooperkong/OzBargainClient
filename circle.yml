@@ -3,5 +3,10 @@ test:
     - ./gradlew assembleDebug
 # Add some environment variables
 machine:
+<<<<<<< HEAD
     java:
         version: oraclejdk8
+=======
+  environment:
+    JAVA8_HOME: oraclejdk8
+>>>>>>> ea01aeb80739e41cc4adcde7322b0bdb34b69c4e
