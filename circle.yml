@@ -1,7 +1,11 @@
 test:
   override:
-    - ./gradlew assembleDebug
+    - ./gradlew assembleDebug PdisablePreDex
+
 # Add some environment variables
 machine:
+    environment:
+            TERM: "dumb"
+            GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
     java:
         version: oraclejdk8
