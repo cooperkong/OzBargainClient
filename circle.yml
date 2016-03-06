@@ -1,6 +1,6 @@
 test:
   override:
-    - ./gradlew assembleDebug PdisablePreDex
+    - ./gradlew assembleDebug -PdisablePreDex
 
 # Add some environment variables
 machine:
