@@ -1,11 +1,4 @@
-dependencies:
-            pre:
-                - echo y | android update sdk --no-ui --all --filter build-tools-23.0.2
-test:
-  override:
-    - ./gradlew test -PdisablePreDex
-    # copy test results
-    - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
+
 
 # Add some environment variables
 machine:
@@ -14,3 +7,13 @@ machine:
             GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
     java:
         version: oraclejdk8
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "tools"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.2"
+
+test:
+  override:
+    - ./gradlew test -PdisablePreDex
+    # copy test results
+    - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
