@@ -1,12 +1,6 @@
 # OzBargainClient
 
-[![Circle CI](https://circleci.com/gh/cooperkong/OzBargainClient/tree/master.svg?style=svg)](https://circleci.com/gh/cooperkong/OzBargainClient/tree/master)
-
-
-
-
-
-
+[![Circle CI](https://circleci.com/gh/cooperkong/OzBargainClient.svg?style=shield)](https://circleci.com/gh/cooperkong/OzBargainClient)
 
 
 <p>Demo Android client of famous Australia website, OZBargain!</p>
