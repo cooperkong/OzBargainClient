@@ -1,0 +1,5 @@
+COVERALLS_REPO_TOKEN: "uhH9cjNDKk7BZkvkAJFl8NSvcoqVDCyAf"
+CI_NAME: circle
+CI_BUILD_NUMBER: 1
+CI_BUILD_URL: www.apple.com
+CI_BRANCH: master
