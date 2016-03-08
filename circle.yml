@@ -26,4 +26,4 @@ deployment:
   coverage:
     branch: [master]
     commands:
-    - ./gradlew coveralls
+    - ./gradlew coveralls --stacktrace
