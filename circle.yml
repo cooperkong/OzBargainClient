@@ -3,9 +3,7 @@
 # Add some environment variables
 machine:
     environment:
-            COVERALLS_REPO_TOKEN: "uhH9cjNDKk7BZkvkAJFl8NSvcoqVDCyAf"
-            TERM: "dumb"
-            GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+            COVERALLS_REPO_TOKEN: uhH9cjNDKk7BZkvkAJFl8NSvcoqVDCyAf
     java:
         version: oraclejdk8
 dependencies:
@@ -20,6 +18,12 @@ test:
     - ./gradlew testDebugUnitTestCoverage
     - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
     - mv app/build/reports/jacoco $CIRCLE_TEST_REPORTS/AppUnitTestsReports
-notify:
-  webhooks:
-    - url: https://coveralls.io/webhook?repo_token=uhH9cjNDKk7BZkvkAJFl8NSvcoqVDCyAf
+
+# Only executed if all tasks are successful
+deployment:
+
+  # report coverage to coveralls
+  coverage:
+    branch: [master]
+    commands:
+    - ./gradlew coveralls
