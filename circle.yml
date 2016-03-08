@@ -3,6 +3,7 @@
 # Add some environment variables
 machine:
     environment:
+            COVERALLS_REPO_TOKEN: "uhH9cjNDKk7BZkvkAJFl8NSvcoqVDCyAf"
             TERM: "dumb"
             GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
     java:
