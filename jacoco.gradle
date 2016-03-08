@@ -54,7 +54,7 @@ project.afterEvaluate {
 }
 
 coveralls {
-    jacocoReportPath = "app/build/reports/jacoco/testDebugUnitTestCoverage/html/index.xml"
+    jacocoReportPath = "${buildDir}/build/reports/jacoco/testDebugUnitTestCoverage/html/index.xml"
 }
 
 tasks.coveralls {
