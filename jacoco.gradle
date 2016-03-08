@@ -54,14 +54,9 @@ project.afterEvaluate {
 }
 
 coveralls {
-    sourceDirs = files('example/src/main/java').flatten() + files('library/src/main/java').flatten()
-    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+    jacocoReportPath = "${buildDir}/reports/jacoco/testDebugUnitTestCoverage/html/index.xml"
 }
 
 tasks.coveralls {
-    group = 'Coverage reports'
-    description = 'Uploads the aggregated coverage report to Coveralls'
-
-    dependsOn jacocoRootReport
-    onlyIf { System.env.'CI' }
+    dependsOn 'testDebugUnitTestCoverage'
 }
