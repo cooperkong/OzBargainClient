@@ -54,7 +54,7 @@ project.afterEvaluate {
 }
 
 coveralls {
-    sourceDirs = 'app/src/main/java'
+    sourceDirs += 'app/src/main/java'
     service = "circle ci"
     jacocoReportPath = "${buildDir}/reports/jacoco/testDebugUnitTestCoverage/html/index.html"
 }
