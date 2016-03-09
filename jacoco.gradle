@@ -54,6 +54,7 @@ project.afterEvaluate {
 }
 
 coveralls {
+    sourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs).files.absolutePath
     service = "circle ci"
     jacocoReportPath = "${buildDir}/reports/jacoco/testDebugUnitTestCoverage/html/index.html"
 }
