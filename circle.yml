@@ -16,5 +16,6 @@ test:
     - ./gradlew test -PdisablePreDex
     # copy test results
     - ./gradlew testDebugUnitTestCoverage coveralls
-    - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
-    - mv app/build/reports/jacoco $CIRCLE_TEST_REPORTS/AppUnitTestsReports
+    - cp app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
+    - cp app/build/reports/jacoco $CIRCLE_TEST_REPORTS/AppUnitTestsReports
+    - ./gradlew testDebugUnitTestCoverage coveralls
