@@ -15,15 +15,6 @@ test:
   override:
     - ./gradlew test -PdisablePreDex
     # copy test results
-    - ./gradlew testDebugUnitTestCoverage
+    - ./gradlew testDebugUnitTestCoverage coveralls
     - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
     - mv app/build/reports/jacoco $CIRCLE_TEST_REPORTS/AppUnitTestsReports
-
-# Only executed if all tasks are successful
-deployment:
-
-  # report coverage to coveralls
-  coverage:
-    branch: [master]
-    commands:
-    - ./gradlew coveralls --stacktrace
