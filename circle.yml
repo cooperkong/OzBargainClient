@@ -15,6 +15,6 @@ test:
   override:
     - ./gradlew test -PdisablePreDex
     # copy test results
-    - ./gradlew testDebugUnitTestCoverage coveralls
+    - ./gradlew testDebugUnitTestCoverage coveralls --info
     - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
     - mv app/build/reports/jacoco $CIRCLE_TEST_REPORTS/AppUnitTestsReports
