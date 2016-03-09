@@ -54,13 +54,8 @@ project.afterEvaluate {
 }
 
 coveralls {
-    FileTree tree = fileTree(dir: 'build')
-// Iterate over the files in the collection
-    tree.each {File file ->
-        println file
-    }
     service = "circle ci"
-    jacocoReportPath = "${buildDir}/reports/jacoco/testDebugUnitTestCoverage/html/index.xml"
+    jacocoReportPath = "${buildDir}/reports/jacoco/testDebugUnitTestCoverage/html/index.html"
 }
 
 tasks.coveralls {
