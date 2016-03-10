@@ -1,18 +1,11 @@
 package com.littlesword.ozbargain.util;
 
-import android.app.Activity;
-import android.content.res.Resources;
-
-import com.littlesword.ozbargain.R;
-
 import org.junit.Test;
-
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.*;
 
@@ -45,7 +38,6 @@ public class CommonUtilTest {
 
     /**
      * for the sake of testing private constructors to increase coverage.
-     * @throws Exception
      */
     @Test
     public void testPrivateConstructors() {
