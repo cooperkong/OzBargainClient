@@ -28,5 +28,6 @@ test:
         - ./gradlew connectedAndroidTest -PdisablePreDex;
         # copy test results
         - ./gradlew testDebugUnitTestCoverage coveralls --info
-        - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
-        - mv app/build/reports/jacoco $CIRCLE_TEST_REPORTS/AppUnitTestsReports
+        - cp -r app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
+        - cp -r app/build/reports/androidTests $CIRCLE_TEST_REPORTS/AppUnitTestsReports
+        - cp -r app/build/reports/coverage $CIRCLE_TEST_REPORTS/CoverageReports
