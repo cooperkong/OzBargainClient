@@ -16,12 +16,13 @@ import java.util.regex.Pattern;
 /**
  * Created by kongw1 on 29/11/15.
  */
-public class CommonUtil {
+public final class CommonUtil {
     private static Pattern pattern = Pattern.compile("\\$[0-9]+(.[0-9][0-9]?)?");//for money in the string
+
+    private CommonUtil(){}
 
     public static String applyColorToString(String input){
         Matcher matcher = pattern.matcher(input);
-
         // Find all matches
         while (matcher.find()) {
             // Get the matching string
@@ -32,21 +33,17 @@ public class CommonUtil {
     }
 
 
-    public static String readTextFile(InputStream inputStream) { // getting XML
+    public static String readTextFile(InputStream inputStream) throws IOException { // getting XML
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         byte buf[] = new byte[1024];
         int len;
-        try {
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
-            }
-            outputStream.close();
-            inputStream.close();
-        } catch (IOException e) {
-
+        while ((len = inputStream.read(buf)) != -1) {
+            outputStream.write(buf, 0, len);
         }
+        outputStream.close();
+        inputStream.close();
         return outputStream.toString();
     }
 

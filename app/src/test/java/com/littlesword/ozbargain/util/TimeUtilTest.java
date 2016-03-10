@@ -1,4 +1,4 @@
-package com.littlesword.ozbargain;
+package com.littlesword.ozbargain.util;
 
 import com.littlesword.ozbargain.util.TimeUtil;
 import org.junit.Rule;
@@ -15,7 +15,7 @@ import static org.junit.Assert.fail;
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
  */
-public class testTimeUtil {
+public class TimeUtilTest {
     @Rule
     public ExpectedException thrown= ExpectedException.none();
 
@@ -25,7 +25,6 @@ public class testTimeUtil {
         assertThat(true).isEqualTo(TimeUtil.isNew("11/12/2016 14:29","11/12/2017 14:34" ));
         assertThat(true).isEqualTo(TimeUtil.isNew("11/10/2015 06:29","02/11/2015 14:34" ));
         assertThat(true).isEqualTo(TimeUtil.isNew("11/10/2015 06:29","02/11/2015 14:34" ));
-
         assertThat(false).isEqualTo(TimeUtil.isNew("11/10/2015 06:29","02/01/2015 14:34" ));
         assertThat(false).isEqualTo(TimeUtil.isNew("11/10/2015 06:29","11/10/2015 05:34" ));
         assertThat(false).isEqualTo(TimeUtil.isNew("11/10/2015 06:29","02/11/2014 14:34" ));
@@ -52,12 +51,8 @@ public class testTimeUtil {
         Constructor[] ctors = TimeUtil.class.getDeclaredConstructors();
         assertEquals("Utility class should only have one constructor",
                 1, ctors.length);
-        Constructor ctor = ctors[0];
         assertFalse("Utility class constructor should be inaccessible",
-                ctor.isAccessible());
-        ctor.setAccessible(true); // obviously we'd never do this in production
-        assertEquals("You'd expect the construct to return the expected type",
-                TimeUtil.class, ctor.newInstance().getClass());
+                ctors[0].isAccessible());
     }
 
 

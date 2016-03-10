@@ -31,6 +31,7 @@ import com.littlesword.ozbargain.view.SettingsFragment;
 
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,24 +193,28 @@ public class MainActivity extends AppCompatActivity
 //                doc -> processDoc((Document) doc),
 //                this :: handlerError
 //        );
-        api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad)))
-                .subscribe(new Subscriber<Object>() {
-                 @Override
-                 public void onCompleted() {
-                 }
+        try {
+            api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad)))
+                    .subscribe(new Subscriber<Object>() {
+                     @Override
+                     public void onCompleted() {
+                     }
 
-                 @Override
-                 public void onError(Throwable e) {
-                     handlerError(e);
-                 }
+                     @Override
+                     public void onError(Throwable e) {
+                         handlerError(e);
+                     }
 
-                 @Override
-                 public void onNext(Object o) {
-                     processDoc((Document) o);
+                     @Override
+                     public void onNext(Object o) {
+                         processDoc((Document) o);
 
+                     }
                  }
-             }
-        );
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
