@@ -13,8 +13,20 @@ dependencies:
 
 test:
   override:
-    - ./gradlew test -PdisablePreDex
-    # copy test results
-    - ./gradlew testDebugUnitTestCoverage coveralls --info
-    - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
-    - mv app/build/reports/jacoco $CIRCLE_TEST_REPORTS/AppUnitTestsReports
+        # run unit tests
+        - ./gradlew test -PdisablePreDex
+        # start the emulator
+        - emulator -avd circleci-android22 -no-audio -no-window:
+            background: true
+            parallel: true
+        # wait for it to have booted
+        - circle-android wait-for-boot
+        - sleep 30
+        # Unlock the screen
+        - adb shell input keyevent 82
+        # run tests  against the emulator.
+        - ./gradlew connectedAndroidTest -PdisablePreDex;
+        # copy test results
+        - ./gradlew testDebugUnitTestCoverage coveralls --info
+        - mv app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
+        - mv app/build/reports/jacoco $CIRCLE_TEST_REPORTS/AppUnitTestsReports
