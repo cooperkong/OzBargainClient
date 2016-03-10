@@ -24,6 +24,7 @@ import org.jsoup.nodes.Document;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import rx.Subscriber;
@@ -45,9 +46,13 @@ public class BargainReceiver extends BroadcastReceiver {
                 String lastBargainTimestamp = mPref.getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
                 String dismissedTime = intent.getExtras().getString(DISSMISSED_TIMESTAMP);
                 if(dismissedTime != null){
-                    if(TimeUtil.isNew(lastBargainTimestamp, dismissedTime)){
-                        //save the new time stamp.
-                        mPref.edit().putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP,dismissedTime).apply();
+                    try {
+                        if(TimeUtil.isNew(lastBargainTimestamp, dismissedTime)){
+                            //save the new time stamp.
+                            mPref.edit().putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP,dismissedTime).apply();
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -78,7 +83,11 @@ public class BargainReceiver extends BroadcastReceiver {
 
                                @Override
                                public void onNext(Object o) {
-                                   processDoc((Document) o, context);
+                                   try {
+                                       processDoc((Document) o, context);
+                                   } catch (ParseException e) {
+                                       e.printStackTrace();
+                                   }
                                }
                            }
                 );
@@ -89,7 +98,7 @@ public class BargainReceiver extends BroadcastReceiver {
 
     }
 
-    private void processDoc(Document doc, Context context) {
+    private void processDoc(Document doc, Context context) throws ParseException {
         ArrayList<Bargain> list = DocExtractor.getBargainItems(doc);
         SharedPreferences mPref = context.getSharedPreferences(NotificationUtil.SHARED_PREF, Context.MODE_PRIVATE);
         String lastBargainTimestamp = mPref.getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");

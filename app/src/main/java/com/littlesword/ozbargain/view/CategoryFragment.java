@@ -20,6 +20,7 @@ import com.littlesword.ozbargain.util.TimeUtil;
 import org.jsoup.nodes.Document;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,12 +53,16 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         mRecycleView.setLayoutManager(mLayoutManager);
         ArrayList<Bargain> list = DocExtractor.getBargainItems(mainInterface.getHomeDoc());
         mAdapter = new BargainMenuRecyclerViewAdapter(getContext(), list, this);
-        updateTimestamp(list);
+        try {
+            updateTimestamp(list);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         mRecycleView.setAdapter(mAdapter);
         return v;
     }
 
-    private void updateTimestamp(ArrayList<Bargain> list) {
+    private void updateTimestamp(ArrayList<Bargain> list) throws ParseException {
 
         String savedLastTimestamp = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE)
                 .getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
