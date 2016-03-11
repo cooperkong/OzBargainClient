@@ -11,11 +11,11 @@ dependencies:
 
 test:
     pre:
-      # emulator startup need some minutes that's why start it before first build/test steps for build speed up
+        # emulator startup need some minutes that's why start it before first build/test steps for build speed up
         - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
             parallel: true
-  override:
+    override:
         # run unit tests
         - ./gradlew test -PdisablePreDex
         # wait for it to have booted
