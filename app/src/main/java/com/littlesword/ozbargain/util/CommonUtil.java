@@ -19,8 +19,6 @@ import java.util.regex.Pattern;
 public final class CommonUtil {
     private static Pattern pattern = Pattern.compile("\\$[0-9]+(.[0-9][0-9]?)?");//for money in the string
 
-    private CommonUtil(){}
-
     public static String applyColorToString(String input){
         Matcher matcher = pattern.matcher(input);
         // Find all matches
