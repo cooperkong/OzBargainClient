@@ -3,9 +3,11 @@ package com.littlesword.ozbargain.util;
 import org.junit.Test;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.*;
 
@@ -36,14 +38,4 @@ public class CommonUtilTest {
         assertTrue(s.length() > 0);
     }
 
-    /**
-     * for the sake of testing private constructors to increase coverage.
-     */
-    @Test
-    public void testPrivateConstructors() {
-        final Constructor<?>[] constructors = CommonUtil.class.getDeclaredConstructors();
-        for (Constructor<?> constructor : constructors) {
-            assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-        }
-    }
 }

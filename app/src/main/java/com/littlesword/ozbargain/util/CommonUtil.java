@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * Created by kongw1 on 29/11/15.
  */
 public final class CommonUtil {
-    private static Pattern pattern = Pattern.compile("\\$[0-9]+(.[0-9][0-9]?)?");//for money in the string
+    private final static Pattern pattern = Pattern.compile("\\$[0-9]+(.[0-9][0-9]?)?");//for money in the string
 
     private CommonUtil(){}
 

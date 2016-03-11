@@ -30,30 +30,5 @@ public class TimeUtilTest {
         assertThat(false).isEqualTo(TimeUtil.isNew("11/10/2015 06:29","02/11/2014 14:34" ));
     }
 
-    @Test
-    public void testIsNewException() throws ParseException {
-        thrown.expect(ParseException.class );
-        TimeUtil.isNew("11-10-2015 06:29","02/11/2014 14:34" );
-    }
-
-    @Test(expected=IllegalAccessException.class)
-    public void testConstructorPrivate() throws Exception {
-        TimeUtil.class.newInstance();
-        fail("Utility class constructor should be private");
-    }
-
-    /**
-     * for the sake of testing private constructors to increase coverage.
-     * @throws Exception
-     */
-    @Test
-    public void constructorInaccessibilityTest() throws Exception {
-        Constructor[] ctors = TimeUtil.class.getDeclaredConstructors();
-        assertEquals("Utility class should only have one constructor",
-                1, ctors.length);
-        assertFalse("Utility class constructor should be inaccessible",
-                ctors[0].isAccessible());
-    }
-
 
 }
