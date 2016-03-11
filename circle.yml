@@ -10,13 +10,14 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.2"
 
 test:
-  override:
-        # run unit tests
-        - ./gradlew test -PdisablePreDex
-        # start the emulator
+    pre:
+      # emulator startup need some minutes that's why start it before first build/test steps for build speed up
         - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
             parallel: true
+  override:
+        # run unit tests
+        - ./gradlew test -PdisablePreDex
         # wait for it to have booted
         - circle-android wait-for-boot
         - sleep 30
@@ -26,6 +27,4 @@ test:
         - ./gradlew connectedAndroidTest -PdisablePreDex;
         # copy test results
         - ./gradlew testDebugUnitTestCoverage coveralls --info
-        - cp -r app/build/reports/tests/debug $CIRCLE_TEST_REPORTS/AppUnitTests
-        - cp -r app/build/reports/androidTests $CIRCLE_TEST_REPORTS/AppUnitTestsReports
-        - cp -r app/build/reports/coverage $CIRCLE_TEST_REPORTS/CoverageReports
+        - cp -r app/build/reports $CIRCLE_TEST_REPORTS/CoverageReports

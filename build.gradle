@@ -39,3 +39,4 @@ subprojects {
         }
     }
 }
+ext.isCi = ("true".equals(System.getenv("TRAVIS")) || "true".equals(System.getenv("CIRCLECI")))
