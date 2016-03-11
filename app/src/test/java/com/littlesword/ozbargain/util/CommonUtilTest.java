@@ -39,11 +39,11 @@ public class CommonUtilTest {
     /**
      * for the sake of testing private constructors to increase coverage.
      */
-//    @Test
-//    public void testPrivateConstructors() {
-//        final Constructor<?>[] constructors = CommonUtil.class.getDeclaredConstructors();
-//        for (Constructor<?> constructor : constructors) {
-//            assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-//        }
-//    }
+    @Test
+    public void testPrivateConstructors() {
+        final Constructor<?>[] constructors = CommonUtil.class.getDeclaredConstructors();
+        for (Constructor<?> constructor : constructors) {
+            assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        }
+    }
 }
