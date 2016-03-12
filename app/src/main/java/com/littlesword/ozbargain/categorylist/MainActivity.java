@@ -1,4 +1,4 @@
-package com.littlesword.ozbargain;
+package com.littlesword.ozbargain.categorylist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
+import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
@@ -23,11 +24,10 @@ import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
-import com.littlesword.ozbargain.view.BargainDetailFragment;
-import com.littlesword.ozbargain.view.CategoryFragment;
-import com.littlesword.ozbargain.view.DialogFragment;
-import com.littlesword.ozbargain.view.SettingsActivity;
-import com.littlesword.ozbargain.view.SettingsFragment;
+import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
+import com.littlesword.ozbargain.mvp.view.DialogFragment;
+import com.littlesword.ozbargain.mvp.view.SettingsActivity;
+import com.littlesword.ozbargain.mvp.view.SettingsFragment;
 
 import org.jsoup.nodes.Document;
 
@@ -255,8 +255,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public long getIntervalFromPref() {
-        long val = Long.parseLong(PreferenceManager.getDefaultSharedPreferences(this)
+        return Long.parseLong(PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(SettingsFragment.INTERVAL_NOTIFICATION, SettingsFragment.DEFAULT_INTERVAL+""));
-        return val;
     }
 }

@@ -1,9 +1,7 @@
-package com.littlesword.ozbargain.view;
+package com.littlesword.ozbargain.mvp.view;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;

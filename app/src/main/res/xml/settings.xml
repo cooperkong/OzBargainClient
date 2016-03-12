@@ -18,7 +18,7 @@
             android:entryValues="@array/pref_syncConnectionTypes_values"
             android:defaultValue="15" />
 
-        <com.littlesword.ozbargain.view.CustomListPreference
+        <com.littlesword.ozbargain.mvp.view.CustomListPreference
             android:dependency="pref_notification"
             android:key="pref_category_favorite"
             android:title="@string/pref_notification_title4"

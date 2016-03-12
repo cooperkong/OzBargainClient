@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".categorylist.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -26,11 +26,11 @@
         </activity>
         <receiver android:name=".scheduler.BargainReceiver"/>
 
-        <activity android:name=".view.SettingsActivity">
+        <activity android:name=".mvp.view.SettingsActivity">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".categorylist.MainActivity" />
         </activity>
     </application>
 

@@ -1,4 +1,4 @@
-package com.littlesword.ozbargain.view;
+package com.littlesword.ozbargain.mvp.view;
 
 import android.content.Context;
 import android.graphics.Color;

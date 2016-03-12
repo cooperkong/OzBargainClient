@@ -1,10 +1,9 @@
-package com.littlesword.ozbargain.view;
+package com.littlesword.ozbargain.mvp.view;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.littlesword.ozbargain.R;
 

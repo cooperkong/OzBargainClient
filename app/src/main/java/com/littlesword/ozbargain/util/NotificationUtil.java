@@ -8,7 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
-import com.littlesword.ozbargain.MainActivity;
+import com.littlesword.ozbargain.categorylist.MainActivity;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 

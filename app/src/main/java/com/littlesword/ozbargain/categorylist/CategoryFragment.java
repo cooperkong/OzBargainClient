@@ -1,4 +1,4 @@
-package com.littlesword.ozbargain.view;
+package com.littlesword.ozbargain.categorylist;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,13 +13,14 @@ import android.view.ViewGroup;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.adapter.BargainMenuRecyclerViewAdapter;
 import com.littlesword.ozbargain.model.Bargain;
+import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
+import com.littlesword.ozbargain.mvp.view.onBargainItemClicklistener;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
 import com.littlesword.ozbargain.util.TimeUtil;
 
 import org.jsoup.nodes.Document;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
 import butterknife.Bind;

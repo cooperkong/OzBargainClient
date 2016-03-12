@@ -3,8 +3,8 @@ package com.littlesword.ozbargain;
 import android.graphics.drawable.Drawable;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
+import com.littlesword.ozbargain.categorylist.MainActivity;
 import com.littlesword.ozbargain.util.CommonUtil;
 
 import org.junit.Rule;

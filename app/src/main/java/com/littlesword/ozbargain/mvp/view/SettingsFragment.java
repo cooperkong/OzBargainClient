@@ -1,4 +1,4 @@
-package com.littlesword.ozbargain.view;
+package com.littlesword.ozbargain.mvp.view;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

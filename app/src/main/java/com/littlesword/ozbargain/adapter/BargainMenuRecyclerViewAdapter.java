@@ -14,12 +14,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.util.CommonUtil;
-import com.littlesword.ozbargain.view.CategoryFragment;
-import com.littlesword.ozbargain.view.onBargainItemClicklistener;
+import com.littlesword.ozbargain.categorylist.CategoryFragment;
+import com.littlesword.ozbargain.mvp.view.onBargainItemClicklistener;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
