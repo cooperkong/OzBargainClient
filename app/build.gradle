@@ -20,6 +20,16 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+
+    productFlavors {
+        mock {
+            applicationId = "com.littlesword.oabargain.mock"
+        }
+        prod {
+
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,6 +39,7 @@ android {
             testCoverageEnabled true
         }
     }
+
     dexOptions {
         if(isCi) {
             // CircleCi allow max 4G memory for all processes together and dex does exceed it
