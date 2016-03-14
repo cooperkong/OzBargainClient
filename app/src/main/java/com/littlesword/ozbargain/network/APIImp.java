@@ -4,7 +4,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -22,7 +21,7 @@ public final class APIImp implements APIInterface{
     }
 
     @Override
-    public Document getMainDocument(String url) {
+    public Document getHomePage(String url) {
         Document doc = null;
         try {
             doc = Jsoup.connect(url)
@@ -35,56 +34,16 @@ public final class APIImp implements APIInterface{
         return doc;
     }
 
-    public Document getMainDocumentString(String url) {
-        Document doc = null;
-        doc = Jsoup.parse(url);
-        return doc;
-    }
 
-    public Observable<Object> getMainDocumentAsyncString(final String url) {
-        return Observable.defer(new Func0<Observable<Object>>() {
-            @Override
-            public Observable<Object> call() {
-                return Observable.just(getMainDocumentString(url)).compose(applySchedulers());
-            }
-        });
-    }
-
-    public Observable<Document> getMainDocumentAsync(final String url) {
-        return applySchedulers(Observable.defer(new Func0<Observable<Document>>() {
+    public Observable<Document> getHomePageAsync(final String url) {
+        return Observable.defer(new Func0<Observable<Document>>() {
             @Override
             public Observable<Document> call() {
-                return Observable.just(getMainDocument(url))
+                return Observable.just(getHomePage(url))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
             }
-        }));
-//        return Observable.defer(new Func0<Observable<Object>>() {
-//            @Override
-//            public Observable<Object> call() {
-//                return .compose(applySchedulers());
-//            }
-//        });
-    }
-
-    /**
-     * Make observable running async.
-     * @param <T>
-     * @return
-     */
-    <T> Observable.Transformer<T, T> applySchedulers() {
-        return new Observable.Transformer<T, T>() {
-            @Override
-            public Observable<T> call(Observable<T> tObservable) {
-                return tObservable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-            }
-        };
-    }
-
-    <T> Observable<T> applySchedulers(Observable<T> observable) {
-        return observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        });
     }
 
 }
