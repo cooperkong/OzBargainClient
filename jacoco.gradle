@@ -55,6 +55,6 @@ project.afterEvaluate {
 
 coveralls {
     service = "circle ci"
-    jacocoReportPath = "${buildDir}/reports/coverage/debug/report.xml"
+    jacocoReportPath = "${buildDir}/reports/coverage/mock/debug/report.xml"
 }
 

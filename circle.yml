@@ -26,5 +26,5 @@ test:
         # run tests  against the emulator.
         - ./gradlew connectedAndroidTest -PdisablePreDex;
         # copy test results
-        - ./gradlew testDebugUnitTestCoverage coveralls --info
+        - ./gradlew testMockDebugUnitTestCoverage coveralls --info
         - cp -r app/build/reports $CIRCLE_TEST_REPORTS/CoverageReports
