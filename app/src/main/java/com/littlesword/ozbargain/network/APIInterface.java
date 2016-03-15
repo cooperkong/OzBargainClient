@@ -10,8 +10,6 @@ import rx.Observable;
  */
 public interface APIInterface {
 
-    Document getHomePage(String url);
-
     Observable<Document> getHomePageAsync(String url);
 
 }

@@ -15,13 +15,7 @@ import rx.schedulers.Schedulers;
  */
 public final class APIImp implements APIInterface{
 
-
-    public APIImp(){
-
-    }
-
-    @Override
-    public Document getHomePage(String url) {
+    private Document getHomePage(String url) {
         Document doc = null;
         try {
             doc = Jsoup.connect(url)

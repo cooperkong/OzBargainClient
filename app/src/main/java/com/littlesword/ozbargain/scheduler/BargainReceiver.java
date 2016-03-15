@@ -65,36 +65,28 @@ public class BargainReceiver extends BroadcastReceiver {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         if(isConnected)
-//            api.getMainDocumentAsync(CatUrls.BASE_URL).subscribe(
-//                    doc -> processDoc((Document) doc, context),
-//                    this::handlerError
-//            );
-            try {
-                api.getMainDocumentAsyncString(CommonUtil.readTextFile(context.getResources().openRawResource(R.raw.sad2)))
-                        .subscribe(new Subscriber<Object>() {
-                                       @Override
-                                       public void onCompleted() {
+            api.getHomePageAsync(CatUrls.BASE_URL)
+                    .subscribe(new Subscriber<Object>() {
+                                   @Override
+                                   public void onCompleted() {
 
-                                       }
+                                   }
 
-                                       @Override
-                                       public void onError(Throwable e) {
-                                           handlerError(e);
-                                       }
+                                   @Override
+                                   public void onError(Throwable e) {
+                                       handlerError(e);
+                                   }
 
-                                       @Override
-                                       public void onNext(Object o) {
-                                           try {
-                                               processDoc((Document) o, context);
-                                           } catch (ParseException e) {
-                                               e.printStackTrace();
-                                           }
+                                   @Override
+                                   public void onNext(Object o) {
+                                       try {
+                                           processDoc((Document) o, context);
+                                       } catch (ParseException e) {
+                                           e.printStackTrace();
                                        }
                                    }
-                        );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                               }
+                    );
     }
 
 

@@ -16,9 +16,11 @@ import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
+import com.littlesword.ozbargain.Injection;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
+import com.littlesword.ozbargain.network.APIInterface;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
 import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.CommonUtil;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
     Document document;
-    APIImp api = new APIImp();
+    APIInterface api = Injection.getAPIImp();
     private static final String DIALOG_TAG = "loading_dialog_tag";;
     private List<String> categories = new ArrayList<>();
     private boolean isHomeSelected;
@@ -125,10 +127,10 @@ public class MainActivity extends AppCompatActivity
             bargain = (Bargain) getIntent().getSerializableExtra(NOTIFICATION_EXTRA);
         if(bargain != null){
             final Bargain finalBargain = bargain;
-            api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(new Action1<Object>() {
+            api.getHomePageAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        processNotificationAction((Document) document, finalBargain);
+                        processNotificationAction(document, finalBargain);
                     }
                 }
             );
@@ -189,32 +191,24 @@ public class MainActivity extends AppCompatActivity
             isHomeSelected = false;
             uri = "/cat/" + item.getTitle().toString().replace("&","-").replace(" ","").toLowerCase();
         }
-//        api.getMainDocumentAsync(CatUrls.BASE_URL +  uri).subscribe(
-//                doc -> processDoc((Document) doc),
-//                this :: handlerError
-//        );
-        try {
-            api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad)))
-                    .subscribe(new Subscriber<Object>() {
-                     @Override
-                     public void onCompleted() {
-                     }
-
-                     @Override
-                     public void onError(Throwable e) {
-                         handlerError(e);
-                     }
-
-                     @Override
-                     public void onNext(Object o) {
-                         processDoc((Document) o);
-
-                     }
+        api.getHomePageAsync(CatUrls.BASE_URL +  uri)
+                .subscribe(new Subscriber<Object>() {
+                 @Override
+                 public void onCompleted() {
                  }
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+                 @Override
+                 public void onError(Throwable e) {
+                     handlerError(e);
+                 }
+
+                 @Override
+                 public void onNext(Object o) {
+                     processDoc((Document) o);
+
+                 }
+             }
+        );
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -238,8 +232,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Observable<Document> getNodeDoc(String nodeId) {
         showLoading();
-        return api.getMainDocumentAsync(CatUrls.BASE_URL + "/" + nodeId);
-//        return api.getMainDocumentAsyncString(CommonUtil.readTextFile(getResources().openRawResource(R.raw.sad3)));
+        return api.getHomePageAsync(CatUrls.BASE_URL + "/" + nodeId);
     }
 
     private void processNotificationAction(Document document, Bargain bargain) {
