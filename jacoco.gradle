@@ -42,7 +42,8 @@ project.afterEvaluate {
                 ]
                 additionalSourceDirs = files(coverageSourceDirs)
                 sourceDirectories = files(coverageSourceDirs)
-                executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec")
+                executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec"
+                                    , "${project.buildDir}/outputs/code-coverage/connected/flavors/${productFlavorName}/coverage.ec")
 
                 reports {
                     xml.enabled = true
@@ -55,6 +56,6 @@ project.afterEvaluate {
 
 coveralls {
     service = "circle ci"
-    jacocoReportPath = "${buildDir}/reports/coverage/mock/debug/report.xml"
+    jacocoReportPath = "${buildDir}/reports/jacoco/testMockDebugUnitTestCoverage/testMockDebugUnitTestCoverage.xml"
 }
 
