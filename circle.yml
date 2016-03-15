@@ -24,7 +24,7 @@ test:
         # Unlock the screen
         - adb shell input keyevent 82
         # run tests  against the emulator.
-        - ./gradlew connectedAndroidTest -PdisablePreDex;
+        - ./gradlew connectedMockDebugAndroidTest -PdisablePreDex;
         # copy test results
         - ./gradlew testMockDebugUnitTestCoverage coveralls --info
         - cp -r app/build/reports $CIRCLE_TEST_REPORTS/CoverageReports
