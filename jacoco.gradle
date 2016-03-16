@@ -43,7 +43,7 @@ project.afterEvaluate {
                 additionalSourceDirs = files(coverageSourceDirs)
                 sourceDirectories = files(coverageSourceDirs)
                 executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec"
-                                    , "${project.buildDir}/outputs/code-coverage/connected/flavors/${productFlavorName}/coverage.ec")
+                                    , "${project.buildDir}/outputs/code-coverage/connected/flavors/MOCK/coverage.ec")
 
                 reports {
                     xml.enabled = true
@@ -55,6 +55,7 @@ project.afterEvaluate {
 }
 
 coveralls {
+
     FileTree tree = fileTree(dir: 'build')
 // Iterate over the files in the collection
     tree.each {File file ->
