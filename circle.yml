@@ -28,3 +28,4 @@ test:
         # copy test results
         - ./gradlew testMockDebugUnitTestCoverage coveralls --info
         - cp -r app/build/reports $CIRCLE_TEST_REPORTS/CoverageReports
+        - cp -r app/build/outputs $CIRCLE_TEST_REPORTS/CoverageReportsOutputs
