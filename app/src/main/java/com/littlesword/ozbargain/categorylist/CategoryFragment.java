@@ -42,12 +42,11 @@ import rx.functions.Action1;
 public class CategoryFragment extends Fragment implements onBargainItemClicklistener, CategoryListContract.View {
     private static final String DIALOG_TAG = "loading_dialog_tag";
     private static final String CAT_ID = "category_string";
-
+    private CategoryListContract.Actions actions;
     @Bind(R.id.bargain_menu_recyclerview)
     RecyclerView mRecycleView;
     private RecyclerView.LayoutManager mLayoutManager;
     private BargainMenuRecyclerViewAdapter mAdapter;
-    APIInterface api = Injection.getAPIImp();
     private CallBack callBack;
 
     @Override
@@ -73,25 +72,14 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         mRecycleView.setLayoutManager(mLayoutManager);
         showLoading();
         //fetching the Home page of OZBargain
-        api.getHomePageAsync(CatUrls.BASE_URL +  getArguments().getString(CAT_ID))
-                .subscribe(new Subscriber<Object>() {
-                               @Override
-                               public void onCompleted() {
-                               }
-
-                               @Override
-                               public void onError(Throwable e) {
-                                   handlerError(e);
-                               }
-
-                               @Override
-                               public void onNext(Object o) {
-                                   processDoc((Document) o);
-
-                               }
-                           }
-                );
+        actions.loadBargainList(getArguments().getString(CAT_ID));
         return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        actions = new BargainListPresenter(this, Injection.getAPIImp());
     }
 
     private void updateTimestamp(ArrayList<Bargain> list) throws ParseException {
@@ -107,13 +95,13 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 
     @Override
     public void onBargainClicked(final Bargain bargain) {
-        getNodeDoc(bargain.nodeId).subscribe(new Action1<Object>() {
-               @Override
-               public void call(Object document) {
-                   processDocument((Document) document, bargain);
-               }
-           }
-        );
+//        getNodeDoc(bargain.nodeId).subscribe(new Action1<Object>() {
+//               @Override
+//               public void call(Object document) {
+//                   processDocument((Document) document, bargain);
+//               }
+//           }
+//        );
 
     }
 
@@ -144,10 +132,17 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     }
 
     @Override
-    public void showCategoryList() {
-            //display the loading dialog.
-        DialogFragment dialog = DialogFragment.newInstant();
-        dialog.show(getActivity().getSupportFragmentManager().beginTransaction(), DIALOG_TAG);
+    public void showCategoryList(Document doc) {
+        ArrayList<Bargain> list = DocExtractor.getBargainItems(doc);
+        mAdapter = new BargainMenuRecyclerViewAdapter(getContext(), list, this);
+        try {
+            updateTimestamp(list);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        callBack.onCategoryLoaded(doc);
+        mRecycleView.setAdapter(mAdapter);
+        dismissLoading();
 
     }
 
@@ -156,21 +151,17 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 
     }
 
-    public Observable<Document> getNodeDoc(String nodeId) {
-        showLoading();
-        return api.getHomePageAsync(CatUrls.BASE_URL + "/" + nodeId);
-    }
+//    public Observable<Document> getNodeDoc(String nodeId) {
+//        showLoading();
+//        return api.getHomePageAsync(CatUrls.BASE_URL + "/" + nodeId);
+//    }
 
-    private void handlerError(Throwable error) {
+    @Override
+    public void handlerError(Throwable error) {
         dismissLoading();
     }
 
     private void processDoc(Document doc) {
-//        document = doc;
-//        getActivity().getSupportFragmentManager().popBackStack();
-//        getActivity().getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragment_container, CategoryFragment.newInstance())
-//                .commit();
 //        //in case MainActivity is opened from notification
 //        Bargain bargain = null;
 //        if(getIntent() != null)
@@ -185,16 +176,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 //                }
 //            );
 //        }
-        ArrayList<Bargain> list = DocExtractor.getBargainItems(doc);
-        mAdapter = new BargainMenuRecyclerViewAdapter(getContext(), list, this);
-        try {
-            updateTimestamp(list);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        callBack.onCategoryLoaded(doc);
-        mRecycleView.setAdapter(mAdapter);
-        dismissLoading();
+
 
     }
 
