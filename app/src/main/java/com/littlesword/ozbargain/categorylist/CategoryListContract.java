@@ -8,10 +8,14 @@ public interface CategoryListContract {
         void showLoading();
         void dismissLoading();
         void showCategoryList();
-        void setUserActionListener(UserAction userActoin);
+        void setUserActionListener(Actions userActoin);
     }
 
-    interface UserAction{
+    interface Actions{
         void openBargain();
+
+        void loadBargainCategory();
+
+        void loadBargainList();
     }
 }

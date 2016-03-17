@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,35 +19,27 @@ import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
-import com.littlesword.ozbargain.Injection;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
-import com.littlesword.ozbargain.network.APIImp;
-import com.littlesword.ozbargain.network.APIInterface;
-import com.littlesword.ozbargain.scheduler.BargainFetcher;
-import com.littlesword.ozbargain.util.CatUrls;
-import com.littlesword.ozbargain.util.CommonUtil;
-import com.littlesword.ozbargain.util.DocExtractor;
-import com.littlesword.ozbargain.util.NotificationUtil;
 import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
-import com.littlesword.ozbargain.mvp.view.DialogFragment;
 import com.littlesword.ozbargain.mvp.view.SettingsActivity;
 import com.littlesword.ozbargain.mvp.view.SettingsFragment;
+import com.littlesword.ozbargain.scheduler.BargainFetcher;
+import com.littlesword.ozbargain.util.CatUrls;
+import com.littlesword.ozbargain.util.DocExtractor;
+import com.littlesword.ozbargain.util.NotificationUtil;
 
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.Subscriber;
 import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, CategoryFragment.MainInterface {
+        implements NavigationView.OnNavigationItemSelectedListener{
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.drawer_layout)
@@ -52,8 +47,6 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
     Document document;
-    APIInterface api = Injection.getAPIImp();
-    private static final String DIALOG_TAG = "loading_dialog_tag";;
     private List<String> categories = new ArrayList<>();
     private boolean isHomeSelected;
     private static final String TAG = "MainActivity";
@@ -68,15 +61,20 @@ public class MainActivity extends AppCompatActivity
         Fresco.initialize(this);
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         selectHome();
         BargainFetcher.scheduleTask(this, getIntervalFromPref());
+    }
 
+    private void initFragment(Fragment notesFragment) {
+        // Add the NotesFragment to the layout
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.fragment_container, notesFragment);
+        transaction.commit();
     }
 
     private void selectHome() {
@@ -88,54 +86,6 @@ public class MainActivity extends AppCompatActivity
         onNavigationItemSelected(mNavigationView.getMenu().getItem(0));
     }
 
-
-    private void handlerError(Throwable error) {
-        dismissLoading();
-    }
-
-    @Override
-    public void dismissLoading() {
-        DialogFragment loading = (DialogFragment) getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
-        if(loading != null)
-            loading.dismiss();
-    }
-
-    private void processDoc(Document doc) {
-        DocExtractor.getCategories(doc).subscribe(
-                new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        if (!categories.contains(s) && isHomeSelected) {
-                            categories.add(s);
-                            mNavigationView.getMenu().add(s);
-                        }
-                        //update settings for selecting category
-                        //in case there is an update in categories, eg: Gaming is added/removed
-                        updateSettingsCategory(categories);
-                    }
-                }
-        );
-        document = doc;
-        dismissLoading();
-        getSupportFragmentManager().popBackStack();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new CategoryFragment())
-                .commit();
-        //in case MainActivity is opened from notification
-        Bargain bargain = null;
-        if(getIntent() != null)
-            bargain = (Bargain) getIntent().getSerializableExtra(NOTIFICATION_EXTRA);
-        if(bargain != null){
-            final Bargain finalBargain = bargain;
-            api.getHomePageAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(new Action1<Object>() {
-                    @Override
-                    public void call(Object o) {
-                        processNotificationAction(document, finalBargain);
-                    }
-                }
-            );
-        }
-    }
 
     private void updateSettingsCategory(List<String> categories) {
         SharedPreferences.Editor pref = getSharedPreferences(NotificationUtil.SHARED_PREF, Context.MODE_PRIVATE).edit();
@@ -185,55 +135,26 @@ public class MainActivity extends AppCompatActivity
         item.setCheckable(true);
         item.setChecked(true);
         updateTitle(item.getTitle().toString());
-        showLoading();
         String uri = "";
         if(item.getTitle().toString().compareToIgnoreCase(getString(R.string.home)) != 0){
             isHomeSelected = false;
             uri = "/cat/" + item.getTitle().toString().replace("&","-").replace(" ","").toLowerCase();
         }
-        api.getHomePageAsync(CatUrls.BASE_URL +  uri)
-                .subscribe(new Subscriber<Object>() {
-                 @Override
-                 public void onCompleted() {
-                 }
 
-                 @Override
-                 public void onError(Throwable e) {
-                     handlerError(e);
-                 }
-
-                 @Override
-                 public void onNext(Object o) {
-                     processDoc((Document) o);
-
-                 }
-             }
-        );
+        initFragment(CategoryFragment.newInstance(uri));
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void showLoading() {
-        //display the loading dialog.
-        DialogFragment dialog = DialogFragment.newInstant();
-        dialog.show(getSupportFragmentManager().beginTransaction(), DIALOG_TAG);
-    }
 
     private void updateTitle(String s) {
         if(getSupportActionBar() != null)
             getSupportActionBar().setTitle(s);
     }
 
-    @Override
-    public Document getHomeDoc() {
-        return document;
-    }
 
-    @Override
-    public Observable<Document> getNodeDoc(String nodeId) {
-        showLoading();
-        return api.getHomePageAsync(CatUrls.BASE_URL + "/" + nodeId);
-    }
+
+
 
     private void processNotificationAction(Document document, Bargain bargain) {
 //        mainInterface.dismissLoading();
