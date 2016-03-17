@@ -48,11 +48,11 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     private RecyclerView.LayoutManager mLayoutManager;
     private BargainMenuRecyclerViewAdapter mAdapter;
     APIInterface api = Injection.getAPIImp();
-    Document document;
-    private List<String> categories = new ArrayList<>();
+    private CallBack callBack;
 
     @Override
     public void onAttach(Context context) {
+        callBack = (CallBack) context;
         super.onAttach(context);
     }
 
@@ -71,7 +71,8 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         ButterKnife.bind(this, v);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
-
+        showLoading();
+        //fetching the Home page of OZBargain
         api.getHomePageAsync(CatUrls.BASE_URL +  getArguments().getString(CAT_ID))
                 .subscribe(new Subscriber<Object>() {
                                @Override
@@ -130,6 +131,8 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 
     @Override
     public void showLoading() {
+        DialogFragment dialog = DialogFragment.newInstant();
+        dialog.show(getActivity().getSupportFragmentManager().beginTransaction(), DIALOG_TAG);
 
     }
 
@@ -158,30 +161,11 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         return api.getHomePageAsync(CatUrls.BASE_URL + "/" + nodeId);
     }
 
-    public Document getHomeDoc() {
-        return document;
-    }
-
-
     private void handlerError(Throwable error) {
         dismissLoading();
     }
 
     private void processDoc(Document doc) {
-//        DocExtractor.getCategories(doc).subscribe(
-//                new Action1<String>() {
-//                    @Override
-//                    public void call(String s) {
-//                        if (!categories.contains(s) && isHomeSelected) {
-//                            categories.add(s);
-//                            mNavigationView.getMenu().add(s);
-//                        }
-//                        //update settings for selecting category
-//                        //in case there is an update in categories, eg: Gaming is added/removed
-//                        updateSettingsCategory(categories);
-//                    }
-//                }
-//        );
 //        document = doc;
 //        getActivity().getSupportFragmentManager().popBackStack();
 //        getActivity().getSupportFragmentManager().beginTransaction()
@@ -201,7 +185,6 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
 //                }
 //            );
 //        }
-
         ArrayList<Bargain> list = DocExtractor.getBargainItems(doc);
         mAdapter = new BargainMenuRecyclerViewAdapter(getContext(), list, this);
         try {
@@ -209,8 +192,13 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        showLoading();
+        callBack.onCategoryLoaded(doc);
         mRecycleView.setAdapter(mAdapter);
+        dismissLoading();
 
+    }
+
+    public interface CallBack {
+        void onCategoryLoaded(Document doc);
     }
 }

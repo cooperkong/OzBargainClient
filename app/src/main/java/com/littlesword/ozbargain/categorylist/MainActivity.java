@@ -39,7 +39,7 @@ import butterknife.ButterKnife;
 import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, CategoryFragment.CallBack{
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.drawer_layout)
@@ -73,7 +73,8 @@ public class MainActivity extends AppCompatActivity
         // Add the NotesFragment to the layout
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fragment_container, notesFragment);
+        getSupportFragmentManager().popBackStack();
+        transaction.replace(R.id.fragment_container, notesFragment);
         transaction.commit();
     }
 
@@ -171,5 +172,23 @@ public class MainActivity extends AppCompatActivity
     public long getIntervalFromPref() {
         return Long.parseLong(PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(SettingsFragment.INTERVAL_NOTIFICATION, SettingsFragment.DEFAULT_INTERVAL+""));
+    }
+
+    @Override
+    public void onCategoryLoaded(Document doc) {
+            DocExtractor.getCategories(doc).subscribe(
+            new Action1<String>() {
+                @Override
+                public void call(String s) {
+                    if (!categories.contains(s) && isHomeSelected) {
+                        categories.add(s);
+                        mNavigationView.getMenu().add(s);
+                    }
+                    //update settings for selecting category
+                    //in case there is an update in categories, eg: Gaming is added/removed
+                    updateSettingsCategory(categories);
+                }
+            }
+        );
     }
 }
