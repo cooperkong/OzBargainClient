@@ -1,6 +1,6 @@
 package com.littlesword.ozbargain.categorylist;
 
-import com.littlesword.ozbargain.mocknetwork.MockAPIImp;
+import com.littlesword.ozbargain.network.APIInterface;
 import com.littlesword.ozbargain.util.CommonUtil;
 
 import org.jsoup.Jsoup;
@@ -29,7 +29,7 @@ public class BargainListPresenterTest {
     private CategoryListContract.View mAddNoteView;
 
     @Mock
-    private MockAPIImp apiImp;
+    private APIInterface apiImp;
 
     private BargainListPresenter mAddNotesPresenter;
 

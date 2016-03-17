@@ -70,9 +70,6 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         ButterKnife.bind(this, v);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
-        showLoading();
-        //fetching the Home page of OZBargain
-        actions.loadBargainList(getArguments().getString(CAT_ID));
         return v;
     }
 
@@ -80,6 +77,9 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         actions = new BargainListPresenter(this, Injection.getAPIImp());
+        showLoading();
+        //fetching the Home page of OZBargain
+        actions.loadBargainList(getArguments().getString(CAT_ID));
     }
 
     private void updateTimestamp(ArrayList<Bargain> list) throws ParseException {
