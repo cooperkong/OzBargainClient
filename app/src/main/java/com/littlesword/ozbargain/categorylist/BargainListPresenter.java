@@ -45,6 +45,7 @@ public class BargainListPresenter implements CategoryListContract.Actions {
                @Override
                public void onNext(Object o) {
                    view.showCategoryList((Document) o);
+                   view.notifyCategoryLoaded((Document) o);
                }
            });
     }

@@ -134,10 +134,14 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        callBack.onCategoryLoaded(doc);
         mRecycleView.setAdapter(mAdapter);
         dismissLoading();
 
+    }
+
+    @Override
+    public void notifyCategoryLoaded(Document doc) {
+        callBack.onCategoryLoaded(doc);
     }
 
     @Override

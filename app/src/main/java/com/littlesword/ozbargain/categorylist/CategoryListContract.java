@@ -11,6 +11,7 @@ public interface CategoryListContract {
         void dismissLoading();
         void handlerError(Throwable e);
         void showCategoryList(Document doc);
+        void notifyCategoryLoaded(Document doc);
         void setUserActionListener(Actions userActoin);
     }
 

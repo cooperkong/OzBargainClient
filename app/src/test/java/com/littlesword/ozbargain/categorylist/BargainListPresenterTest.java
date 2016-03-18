@@ -7,8 +7,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,12 +25,11 @@ import static org.mockito.Mockito.when;
 /**
  * Created by kongw1 on 17/03/16.
  */
+@RunWith(MockitoJUnitRunner.class)
 public class BargainListPresenterTest {
 
     @Mock
     private CategoryListContract.View mAddNoteView;
-    @Mock
-    private CategoryFragment.CallBack mActivityCallback;
 
     @Mock
     private APIInterface apiImp;
@@ -37,7 +38,6 @@ public class BargainListPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
         mAddNotesPresenter = new BargainListPresenter(mAddNoteView, apiImp);
     }
 
@@ -84,6 +84,6 @@ public class BargainListPresenterTest {
             }
         }));
         mAddNotesPresenter.loadBargainList("");
-        verify(mActivityCallback).onCategoryLoaded(any(Document.class));
+        verify(mAddNoteView).notifyCategoryLoaded(any(Document.class));
     }
 }

@@ -1,5 +1,7 @@
 package com.littlesword.ozbargain.util;
 
+import com.littlesword.ozbargain.Injection;
+
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
@@ -15,7 +17,7 @@ public class PrivateConstructorTest {
     @Test
     public void callPrivateConstructorsForCodeCoverage() throws SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        Class<?>[] classesToConstruct = {CommonUtil.class, TimeUtil.class};
+        Class<?>[] classesToConstruct = {CommonUtil.class, TimeUtil.class, Injection.class};
         for(Class<?> clazz : classesToConstruct)
         {
             Constructor<?> constructor = clazz.getDeclaredConstructor();

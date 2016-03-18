@@ -8,6 +8,10 @@ import com.littlesword.ozbargain.network.APIInterface;
  */
 public class Injection {
 
+    private Injection(){
+        //no instance
+    }
+
     public static APIInterface getAPIImp(){
         return new MockAPIImp();
     }

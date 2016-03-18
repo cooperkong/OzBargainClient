@@ -1,6 +1,8 @@
 package com.littlesword.ozbargain;
 
+import android.content.ComponentName;
 import android.graphics.drawable.Drawable;
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
@@ -18,9 +20,12 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -62,6 +67,15 @@ public class MainActivityTest {
                 .perform(click());// click on settings
         onView(withText(R.string.pref_notification_title))
                 .check(matches(notNullValue()));//check if settings screen is opened
+
+//        onView(withContentDescription(android.support.v7.appcompat.R.string.abc_action_bar_up_description))
+//                .perform(click());//click home button
+        Espresso.pressBack();
+
+        //previous view should be shown
+        onView(withId(R.id.fragment_container))
+                .check(matches(isDisplayed()));
+
     }
 
     @Test
