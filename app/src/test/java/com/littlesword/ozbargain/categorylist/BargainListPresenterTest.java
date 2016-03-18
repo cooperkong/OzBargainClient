@@ -27,6 +27,8 @@ public class BargainListPresenterTest {
 
     @Mock
     private CategoryListContract.View mAddNoteView;
+    @Mock
+    private CategoryFragment.CallBack mActivityCallback;
 
     @Mock
     private APIInterface apiImp;
@@ -67,5 +69,21 @@ public class BargainListPresenterTest {
     @Test
     public void testLoadBargainList() throws Exception {
 
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("sad");
+        Document document = null;
+        try {
+            document = Jsoup.parse(CommonUtil.readTextFile(in));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Document finalDocument = document;
+        when(apiImp.getHomePageAsync(any(String.class))).thenReturn(Observable.defer(new Func0<Observable<Document>>() {
+            @Override
+            public Observable<Document> call() {
+                return Observable.just(finalDocument);
+            }
+        }));
+        mAddNotesPresenter.loadBargainList("");
+        verify(mActivityCallback).onCategoryLoaded(any(Document.class));
     }
 }

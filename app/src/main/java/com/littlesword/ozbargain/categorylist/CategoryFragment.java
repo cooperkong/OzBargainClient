@@ -18,8 +18,6 @@ import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
 import com.littlesword.ozbargain.mvp.view.DialogFragment;
 import com.littlesword.ozbargain.mvp.view.onBargainItemClicklistener;
-import com.littlesword.ozbargain.network.APIInterface;
-import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
 import com.littlesword.ozbargain.util.TimeUtil;
@@ -28,13 +26,9 @@ import org.jsoup.nodes.Document;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action1;
 
 /**
  * Created by kongw1 on 14/11/15.
