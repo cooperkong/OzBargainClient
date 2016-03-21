@@ -61,9 +61,9 @@ public class BargainListPresenterTest {
             }
         }));
         Bargain test = Mockito.mock(Bargain.class);
+        mAddNoteView.openBargainDetails(test);
         mAddNotesPresenter.openBargain(test);
         verify(mAddNoteView).showLoading();
-        verify(mAddNoteView).openBargainDetails(any(Bargain.class));
         verify(mAddNoteView).dismissLoading();
     }
 

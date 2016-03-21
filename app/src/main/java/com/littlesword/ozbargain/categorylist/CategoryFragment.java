@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 /**
  * Created by kongw1 on 14/11/15.
  */
-public class CategoryFragment extends Fragment implements onBargainItemClicklistener, CategoryListContract.View {
+public class CategoryFragment extends Fragment implements CategoryListContract.View {
     private static final String DIALOG_TAG = "loading_dialog_tag";
     private static final String CAT_ID = "category_string";
     private CategoryListContract.Actions actions;
@@ -87,12 +87,6 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
         }
     }
 
-    @Override
-    public void onBargainClicked(Bargain bargain) {
-        actions.openBargain(bargain);
-
-    }
-
 
     @Override
     public void showLoading() {
@@ -111,7 +105,7 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     @Override
     public void showCategoryList(Document doc) {
         ArrayList<Bargain> list = DocExtractor.getBargainItems(doc);
-        mAdapter = new BargainMenuRecyclerViewAdapter(getContext(), list, this);
+        mAdapter = new BargainMenuRecyclerViewAdapter(getContext(), list, actions);
         try {
             updateTimestamp(list);
         } catch (ParseException e) {
