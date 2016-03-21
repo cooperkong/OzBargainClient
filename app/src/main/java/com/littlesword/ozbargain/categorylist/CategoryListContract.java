@@ -1,5 +1,7 @@
 package com.littlesword.ozbargain.categorylist;
 
+import com.littlesword.ozbargain.model.Bargain;
+
 import org.jsoup.nodes.Document;
 
 /**
@@ -12,11 +14,11 @@ public interface CategoryListContract {
         void handlerError(Throwable e);
         void showCategoryList(Document doc);
         void notifyCategoryLoaded(Document doc);
-        void setUserActionListener(Actions userActoin);
+        void openBargainDetails(Bargain bargain);
     }
 
     interface Actions{
-        void openBargain();
+        void openBargain(Bargain bargain);
 
         void loadBargainCategory();
 

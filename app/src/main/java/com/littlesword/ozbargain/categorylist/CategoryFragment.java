@@ -88,28 +88,11 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     }
 
     @Override
-    public void onBargainClicked(final Bargain bargain) {
-//        getNodeDoc(bargain.nodeId).subscribe(new Action1<Object>() {
-//               @Override
-//               public void call(Object document) {
-//                   processDocument((Document) document, bargain);
-//               }
-//           }
-//        );
+    public void onBargainClicked(Bargain bargain) {
+        actions.openBargain(bargain);
 
     }
 
-    private void processDocument(Document document, Bargain bargain) {
-        dismissLoading();
-        //get to the bargain node details page.
-        bargain.comments = DocExtractor.getComments(document);
-        bargain.coupon = DocExtractor.getCoupon(document);
-        bargain.description = DocExtractor.getDescription(document);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
-                .addToBackStack("detail_fragment")
-                .commit();
-    }
 
     @Override
     public void showLoading() {
@@ -145,14 +128,12 @@ public class CategoryFragment extends Fragment implements onBargainItemClicklist
     }
 
     @Override
-    public void setUserActionListener(CategoryListContract.Actions userActoin) {
-
+    public void openBargainDetails(Bargain bargain) {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
+                .addToBackStack("detail_fragment")
+                .commit();
     }
-
-//    public Observable<Document> getNodeDoc(String nodeId) {
-//        showLoading();
-//        return api.getHomePageAsync(CatUrls.BASE_URL + "/" + nodeId);
-//    }
 
     @Override
     public void handlerError(Throwable error) {

@@ -1,5 +1,6 @@
 package com.littlesword.ozbargain.categorylist;
 
+import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIInterface;
 import com.littlesword.ozbargain.util.CommonUtil;
 
@@ -9,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -44,6 +46,25 @@ public class BargainListPresenterTest {
     @Test
     public void testOpenBargain() throws Exception {
 
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("sad3");
+        Document document = null;
+        try {
+            document = Jsoup.parse(CommonUtil.readTextFile(in));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        final Document finalDocument = document;
+        when(apiImp.getHomePageAsync(any(String.class))).thenReturn(Observable.defer(new Func0<Observable<Document>>() {
+            @Override
+            public Observable<Document> call() {
+                return Observable.just(finalDocument);
+            }
+        }));
+        Bargain test = Mockito.mock(Bargain.class);
+        mAddNotesPresenter.openBargain(test);
+        verify(mAddNoteView).showLoading();
+        verify(mAddNoteView).openBargainDetails(any(Bargain.class));
+        verify(mAddNoteView).dismissLoading();
     }
 
     @Test

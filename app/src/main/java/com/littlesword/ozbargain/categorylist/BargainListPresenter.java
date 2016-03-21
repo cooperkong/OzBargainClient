@@ -1,11 +1,16 @@
 package com.littlesword.ozbargain.categorylist;
 
+import com.littlesword.ozbargain.R;
+import com.littlesword.ozbargain.model.Bargain;
+import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
 import com.littlesword.ozbargain.network.APIInterface;
 import com.littlesword.ozbargain.util.CatUrls;
+import com.littlesword.ozbargain.util.DocExtractor;
 
 import org.jsoup.nodes.Document;
 
 import rx.Subscriber;
+import rx.functions.Action1;
 
 /**
  * Created by kongw1 on 17/03/16.
@@ -20,8 +25,16 @@ public class BargainListPresenter implements CategoryListContract.Actions {
     }
 
     @Override
-    public void openBargain() {
+    public void openBargain(final Bargain bargain) {
 
+        view.showLoading();
+        api.getHomePageAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(new Action1<Object>() {
+               @Override
+               public void call(Object document) {
+                   processDocument((Document) document, bargain);
+               }
+           }
+        );
     }
 
     @Override
@@ -48,5 +61,15 @@ public class BargainListPresenter implements CategoryListContract.Actions {
                    view.notifyCategoryLoaded((Document) o);
                }
            });
+    }
+
+
+    private void processDocument(Document document, Bargain bargain) {
+        view.dismissLoading();
+        //get to the bargain node details page.
+        bargain.comments = DocExtractor.getComments(document);
+        bargain.coupon = DocExtractor.getCoupon(document);
+        bargain.description = DocExtractor.getDescription(document);
+        view.openBargainDetails(bargain);
     }
 }
