@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func0;
+import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -83,7 +85,7 @@ public class BargainListPresenterTest {
                 return Observable.just(finalDocument);
             }
         }));
-        mAddNotesPresenter.loadBargainList("");
+        mAddNotesPresenter.loadBargainList(any(String.class));
         verify(mAddNoteView).showCategoryList(any(Document.class));
     }
 
@@ -104,7 +106,20 @@ public class BargainListPresenterTest {
                 return Observable.just(finalDocument);
             }
         }));
-        mAddNotesPresenter.loadBargainList("");
+        mAddNotesPresenter.loadBargainList(any(String.class));
         verify(mAddNoteView).notifyCategoryLoaded(any(Document.class));
+    }
+
+    @Test
+    public void testViewCanHandleError(){
+        when(apiImp.getHomePageAsync(any(String.class))).thenReturn(Observable.defer(new Func0<Observable<Document>>() {
+            @Override
+            public Observable<Document> call() {
+                //throw exception when subscribed
+                throw new RuntimeException("oops!");
+            }
+        }));
+        mAddNotesPresenter.loadBargainList(any(String.class));
+        verify(mAddNoteView).handlerError(any(Throwable.class));
     }
 }

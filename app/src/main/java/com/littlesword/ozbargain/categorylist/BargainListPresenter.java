@@ -1,8 +1,6 @@
 package com.littlesword.ozbargain.categorylist;
 
-import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
-import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
 import com.littlesword.ozbargain.network.APIInterface;
 import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.DocExtractor;

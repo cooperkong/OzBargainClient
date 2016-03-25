@@ -131,6 +131,7 @@ public class CategoryFragment extends Fragment implements CategoryListContract.V
 
     @Override
     public void handlerError(Throwable error) {
+        //TODO display some sort of error message.
         dismissLoading();
     }
 
