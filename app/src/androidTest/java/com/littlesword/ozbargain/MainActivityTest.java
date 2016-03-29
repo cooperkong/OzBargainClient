@@ -2,15 +2,12 @@ package com.littlesword.ozbargain;
 
 import android.graphics.drawable.Drawable;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
-import android.webkit.WebView;
 
 import com.littlesword.ozbargain.categorylist.MainActivity;
-import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
 import com.littlesword.ozbargain.util.CommonUtil;
 
 import org.junit.Rule;
@@ -29,7 +26,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.notNullValue;

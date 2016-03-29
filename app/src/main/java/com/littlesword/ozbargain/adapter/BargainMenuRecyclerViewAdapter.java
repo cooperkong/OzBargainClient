@@ -15,8 +15,6 @@ import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.categorylist.CategoryListContract;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.util.CommonUtil;
-import com.littlesword.ozbargain.categorylist.CategoryFragment;
-import com.littlesword.ozbargain.mvp.view.onBargainItemClicklistener;
 
 import java.util.ArrayList;
 

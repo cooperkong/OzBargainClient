@@ -15,9 +15,8 @@ import com.littlesword.ozbargain.Injection;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.adapter.BargainMenuRecyclerViewAdapter;
 import com.littlesword.ozbargain.model.Bargain;
-import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
+import com.littlesword.ozbargain.bargaindetail.BargainDetailFragment;
 import com.littlesword.ozbargain.mvp.view.DialogFragment;
-import com.littlesword.ozbargain.mvp.view.onBargainItemClicklistener;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
 import com.littlesword.ozbargain.util.TimeUtil;
@@ -105,7 +104,7 @@ public class CategoryFragment extends Fragment implements CategoryListContract.V
     @Override
     public void showCategoryList(Document doc) {
         ArrayList<Bargain> list = DocExtractor.getBargainItems(doc);
-        mAdapter = new BargainMenuRecyclerViewAdapter(getContext(), list, actions);
+        mAdapter = new BargainMenuRecyclerViewAdapter(getActivity(), list, actions);
         try {
             updateTimestamp(list);
         } catch (ParseException e) {

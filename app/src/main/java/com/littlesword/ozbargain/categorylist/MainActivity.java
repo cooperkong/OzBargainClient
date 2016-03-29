@@ -21,11 +21,10 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
-import com.littlesword.ozbargain.mvp.view.BargainDetailFragment;
+import com.littlesword.ozbargain.bargaindetail.BargainDetailFragment;
 import com.littlesword.ozbargain.mvp.view.SettingsActivity;
 import com.littlesword.ozbargain.mvp.view.SettingsFragment;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
-import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
 
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity
         // Add the NotesFragment to the layout
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        getSupportFragmentManager().popBackStack();
         transaction.replace(R.id.fragment_container, notesFragment);
         transaction.commit();
     }

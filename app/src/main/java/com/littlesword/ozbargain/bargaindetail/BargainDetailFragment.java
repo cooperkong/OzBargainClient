@@ -1,4 +1,4 @@
-package com.littlesword.ozbargain.mvp.view;
+package com.littlesword.ozbargain.bargaindetail;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +19,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.model.Comment;
+import com.littlesword.ozbargain.mvp.view.CommentView;
 import com.littlesword.ozbargain.util.CatUrls;
 import com.littlesword.ozbargain.util.CommonUtil;
 
