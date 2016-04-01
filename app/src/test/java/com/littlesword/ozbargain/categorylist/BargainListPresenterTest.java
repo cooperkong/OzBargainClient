@@ -39,7 +39,8 @@ public class BargainListPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mAddNotesPresenter = new BargainListPresenter(mAddNoteView, apiImp);
+        mAddNotesPresenter = new BargainListPresenter(apiImp);
+        mAddNotesPresenter.setView(mAddNoteView);
     }
 
     @Test
