@@ -9,6 +9,8 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func0;
@@ -18,7 +20,10 @@ import rx.schedulers.Schedulers;
  * Created by kongw1 on 13/03/16.
  */
 public class MockAPIImp implements APIInterface{
+    @Inject
+    public MockAPIImp(){
 
+    }
     private Document getHomePage() {
         String file = "res/raw/sad"; // res/raw/test.txt also work.
         InputStream in = this.getClass().getClassLoader().getResourceAsStream(file);

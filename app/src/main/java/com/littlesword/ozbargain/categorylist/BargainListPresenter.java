@@ -7,20 +7,24 @@ import com.littlesword.ozbargain.util.DocExtractor;
 
 import org.jsoup.nodes.Document;
 
+import javax.inject.Inject;
+
 import rx.Subscriber;
 import rx.functions.Action1;
 
 /**
  * Created by kongw1 on 17/03/16.
  */
-public class BargainListPresenter implements CategoryListContract.Actions {
-    private CategoryListContract.View view;
+public class BargainListPresenter implements BargainListContract.Actions {
+    private BargainListContract.View view;
     private APIInterface api;
 
-    public BargainListPresenter(CategoryListContract.View view, APIInterface api){
-        this.view = view;
+    @Inject
+    public BargainListPresenter(APIInterface api){
         this.api = api;
     }
+
+
 
     @Override
     public void openBargain(final Bargain bargain) {
@@ -59,6 +63,11 @@ public class BargainListPresenter implements CategoryListContract.Actions {
                    view.notifyCategoryLoaded((Document) o);
                }
            });
+    }
+
+    @Override
+    public void setView(BargainListContract.View view) {
+        this.view = view;
     }
 
 

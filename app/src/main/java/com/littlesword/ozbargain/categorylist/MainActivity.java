@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
 import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, CategoryFragment.CallBack{
+        implements NavigationView.OnNavigationItemSelectedListener, BargainListFragment.CallBack{
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.drawer_layout)
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
             uri = "/cat/" + item.getTitle().toString().replace("&","-").replace(" ","").toLowerCase();
         }
 
-        initFragment(CategoryFragment.newInstance(uri));
+        initFragment(BargainListFragment.newInstance(uri));
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }

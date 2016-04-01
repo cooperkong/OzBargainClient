@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.littlesword.ozbargain.Injection;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.adapter.BargainMenuRecyclerViewAdapter;
+import com.littlesword.ozbargain.dagger.DaggerBargainListComponent;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.bargaindetail.BargainDetailFragment;
 import com.littlesword.ozbargain.mvp.view.DialogFragment;
@@ -26,16 +26,18 @@ import org.jsoup.nodes.Document;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * Created by kongw1 on 14/11/15.
  */
-public class CategoryFragment extends Fragment implements CategoryListContract.View {
+public class BargainListFragment extends Fragment implements BargainListContract.View {
     private static final String DIALOG_TAG = "loading_dialog_tag";
     private static final String CAT_ID = "category_string";
-    private CategoryListContract.Actions actions;
+    @Inject BargainListContract.Actions actions;
     @Bind(R.id.bargain_menu_recyclerview)
     RecyclerView mRecycleView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -48,8 +50,8 @@ public class CategoryFragment extends Fragment implements CategoryListContract.V
         super.onAttach(context);
     }
 
-    public static CategoryFragment newInstance(String title){
-        CategoryFragment ret = new CategoryFragment();
+    public static BargainListFragment newInstance(String title){
+        BargainListFragment ret = new BargainListFragment();
         Bundle args = new Bundle();
         args.putString(CAT_ID, title);
         ret.setArguments(args);
@@ -69,7 +71,8 @@ public class CategoryFragment extends Fragment implements CategoryListContract.V
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        actions = new BargainListPresenter(this, Injection.getAPIImp());
+        DaggerBargainListComponent.create().inject(this);
+        actions.setView(this);
         showLoading();
         //fetching the Home page of OZBargain
         actions.loadBargainList(getArguments().getString(CAT_ID));

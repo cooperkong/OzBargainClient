@@ -11,16 +11,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func0;
-import rx.observers.TestSubscriber;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
@@ -33,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class BargainListPresenterTest {
 
     @Mock
-    private CategoryListContract.View mAddNoteView;
+    private BargainListContract.View mAddNoteView;
 
     @Mock
     private APIInterface apiImp;

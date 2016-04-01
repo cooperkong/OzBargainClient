@@ -5,6 +5,8 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func0;
@@ -14,6 +16,10 @@ import rx.schedulers.Schedulers;
  * Created by kongw1 on 13/11/15.
  */
 public final class APIImp implements APIInterface{
+    @Inject
+    public APIImp(){
+
+    }
 
     private Document getHomePage(String url) {
         Document doc = null;

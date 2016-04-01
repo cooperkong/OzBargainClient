@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.littlesword.ozbargain.R;
-import com.littlesword.ozbargain.categorylist.CategoryListContract;
+import com.littlesword.ozbargain.categorylist.BargainListContract;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.util.CommonUtil;
 
@@ -29,9 +29,9 @@ public class BargainMenuRecyclerViewAdapter extends RecyclerView.Adapter<Bargain
     private final Context mContext;
     private final Drawable mShoppingIcon;
     private ArrayList<Bargain> mBargains;
-    private CategoryListContract.Actions listener;
+    private BargainListContract.Actions listener;
 
-    public BargainMenuRecyclerViewAdapter(Context context, ArrayList<Bargain> bargains, CategoryListContract.Actions listener){
+    public BargainMenuRecyclerViewAdapter(Context context, ArrayList<Bargain> bargains, BargainListContract.Actions listener){
         this.mBargains = bargains;
         this.listener = listener;
         this.mContext = context;

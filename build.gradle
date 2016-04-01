@@ -43,7 +43,7 @@ ext{
     isCi = ("true".equals(System.getenv("TRAVIS")) || "true".equals(System.getenv("CIRCLECI")))
 
     // App dependencies
-    supportLibraryVersion = '23.1.1'
+    supportLibraryVersion = '23.2.1'
     guavaVersion = '18.0'
     glideVersion = '3.6.1'
     junitVersion = '4.12'

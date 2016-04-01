@@ -7,7 +7,7 @@ import org.jsoup.nodes.Document;
 /**
  * Created by kongw1 on 12/03/16.
  */
-public interface CategoryListContract {
+public interface BargainListContract {
     interface View{
         void showLoading();
         void dismissLoading();
@@ -23,5 +23,7 @@ public interface CategoryListContract {
         void loadBargainCategory();
 
         void loadBargainList(String category);
+
+        void setView(BargainListContract.View view);
     }
 }
