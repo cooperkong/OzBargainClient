@@ -23,10 +23,10 @@ android {
 
     productFlavors {
         mock {
-            applicationId = "com.littlesword.oabargain.mock"
+            applicationId = "com.littlesword.ozbargain.mock"
         }
         prod {
-            applicationId = "com.littlesword.oabargain"
+            applicationId = "com.littlesword.ozbargain"
         }
     }
 

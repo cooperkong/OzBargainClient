@@ -1,6 +1,6 @@
 package com.littlesword.ozbargain.dagger;
 
-import com.littlesword.ozbargain.mocknetwork.MockAPIImp;
+import com.littlesword.ozbargain.Injection;
 import com.littlesword.ozbargain.network.APIInterface;
 
 import dagger.Module;
@@ -14,6 +14,6 @@ public class AppModule {
 
     @Provides
     public APIInterface provideAPIInterface(){
-        return new MockAPIImp();
+        return Injection.getAPIImp();
     }
 }
