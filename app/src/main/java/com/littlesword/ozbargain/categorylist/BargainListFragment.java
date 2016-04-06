@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.littlesword.ozbargain.MainApplication;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.adapter.BargainMenuRecyclerViewAdapter;
 import com.littlesword.ozbargain.dagger.DaggerBargainListComponent;
@@ -71,7 +72,9 @@ public class BargainListFragment extends Fragment implements BargainListContract
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        DaggerBargainListComponent.builder().appComponent()
+        DaggerBargainListComponent.builder().appComponent(
+                ((MainApplication)getActivity().getApplication()).getAppComponent()
+        ).build().inject(this);
         actions.setView(this);
         showLoading();
         //fetching the Home page of OZBargain
