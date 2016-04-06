@@ -71,7 +71,7 @@ public class BargainListFragment extends Fragment implements BargainListContract
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        DaggerBargainListComponent.create().inject(this);
+        DaggerBargainListComponent.builder().appComponent()
         actions.setView(this);
         showLoading();
         //fetching the Home page of OZBargain
