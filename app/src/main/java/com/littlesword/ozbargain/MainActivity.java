@@ -19,11 +19,9 @@ import android.view.MenuItem;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
-import com.littlesword.ozbargain.R;
-import com.littlesword.ozbargain.categorylist.BargainListFragment;
-import com.littlesword.ozbargain.dagger.DaggerAppComponent;
-import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.bargaindetail.BargainDetailFragment;
+import com.littlesword.ozbargain.categorylist.BargainListFragment;
+import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.mvp.view.SettingsActivity;
 import com.littlesword.ozbargain.mvp.view.SettingsFragment;
 import com.littlesword.ozbargain.scheduler.BargainFetcher;
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity
     private List<String> categories = new ArrayList<>();
     private boolean isHomeSelected;
     private static final String TAG = "MainActivity";
-    public static final String NOTIFICATION_EXTRA = "notification_action";
     public static final String CATEGORIES = "categories";
     private Gson gson = new Gson();
 
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
             this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.setDrawerListener(toggle);
+        mDrawer.addDrawerListener(toggle);
         toggle.syncState();
         selectHome();
         BargainFetcher.scheduleTask(this, getIntervalFromPref());
