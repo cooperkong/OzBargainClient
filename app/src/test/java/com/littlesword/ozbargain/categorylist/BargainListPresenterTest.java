@@ -83,7 +83,7 @@ public class BargainListPresenterTest {
                 return Observable.just(finalDocument);
             }
         }));
-        mAddNotesPresenter.loadBargainList(any(String.class));
+        mAddNotesPresenter.loadBargainList("whatever");
         verify(mAddNoteView).showCategoryList(any(Document.class));
     }
 
@@ -104,7 +104,7 @@ public class BargainListPresenterTest {
                 return Observable.just(finalDocument);
             }
         }));
-        mAddNotesPresenter.loadBargainList(any(String.class));
+        mAddNotesPresenter.loadBargainList("whatever");
         verify(mAddNoteView).notifyCategoryLoaded(any(Document.class));
     }
 
@@ -117,7 +117,7 @@ public class BargainListPresenterTest {
                 throw new RuntimeException("oops!");
             }
         }));
-        mAddNotesPresenter.loadBargainList(any(String.class));
+        mAddNotesPresenter.loadBargainList("whatever");
         verify(mAddNoteView).handlerError(any(Throwable.class));
     }
 }
