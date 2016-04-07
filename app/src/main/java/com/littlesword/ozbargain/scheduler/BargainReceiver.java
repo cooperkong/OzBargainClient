@@ -33,8 +33,8 @@ import rx.Subscriber;
  * Created by kongw1 on 18/11/15.
  */
 public class BargainReceiver extends BroadcastReceiver {
-    private static final String NOTIFICATION_DISSMISSED = "notification_dismissed";
-    private static final String DISSMISSED_TIMESTAMP = "dismissed_timestamp";
+    public static final String NOTIFICATION_DISSMISSED = "notification_dismissed";
+    public static final String DISSMISSED_TIMESTAMP = "dismissed_timestamp";
 
     @Override
     public void onReceive(final Context context, Intent intent) {

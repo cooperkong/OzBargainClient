@@ -79,6 +79,7 @@ dependencies {
         exclude group: 'com.android.support'
     }
     androidTestCompile "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+    androidTestCompile "com.google.truth:truth:0.27"
 
     // Set this dependency to build and run UI Automator tests
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'

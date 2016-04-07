@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.littlesword.ozbargain.MainActivity;
 import com.littlesword.ozbargain.R;
+import com.littlesword.ozbargain.categorylist.BargainListFragment;
 import com.littlesword.ozbargain.model.Bargain;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,7 +28,7 @@ public class NotificationUtil {
         Intent resultIntent = new Intent(context, MainActivity.class);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        resultIntent.putExtra(MainActivity.NOTIFICATION_EXTRA, bargain);
+        resultIntent.putExtra(BargainListFragment.NOTIFICATION_EXTRA, bargain);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         context,
