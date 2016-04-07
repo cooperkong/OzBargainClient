@@ -65,7 +65,7 @@ dependencies {
     testCompile 'com.google.truth:truth:0.27'
     testCompile 'junit:junit:4.12'
 
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testCompile "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
     testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
     testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
@@ -78,6 +78,10 @@ dependencies {
         exclude group: 'javax.inject'
         exclude group: 'com.android.support'
     }
+    androidTestCompile "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+
+    // Set this dependency to build and run UI Automator tests
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestCompile "com.android.support.test.espresso:espresso-intents:2.2.1"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"

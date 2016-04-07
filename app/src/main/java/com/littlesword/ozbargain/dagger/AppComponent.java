@@ -1,6 +1,6 @@
 package com.littlesword.ozbargain.dagger;
 
-import com.littlesword.ozbargain.categorylist.MainActivity;
+import com.littlesword.ozbargain.MainActivity;
 import com.littlesword.ozbargain.network.APIInterface;
 
 import dagger.Component;

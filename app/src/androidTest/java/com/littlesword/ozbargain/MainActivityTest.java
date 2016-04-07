@@ -10,7 +10,6 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 
-import com.littlesword.ozbargain.categorylist.MainActivity;
 import com.littlesword.ozbargain.util.CommonUtil;
 
 import org.hamcrest.Description;

@@ -1,4 +1,4 @@
-package com.littlesword.ozbargain.categorylist;
+package com.littlesword.ozbargain;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.littlesword.ozbargain.R;
+import com.littlesword.ozbargain.categorylist.BargainListFragment;
 import com.littlesword.ozbargain.dagger.DaggerAppComponent;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.bargaindetail.BargainDetailFragment;
@@ -39,7 +40,7 @@ import butterknife.ButterKnife;
 import rx.functions.Action1;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BargainListFragment.CallBack{
+        implements NavigationView.OnNavigationItemSelectedListener, BargainListFragment.CallBack {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.drawer_layout)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.littlesword.ozbargain" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.littlesword.ozbargain">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -16,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".categorylist.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -31,7 +32,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".categorylist.MainActivity" />
+                android:value=".MainActivity" />
         </activity>
     </application>
 

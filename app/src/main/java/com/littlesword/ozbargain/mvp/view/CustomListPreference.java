@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.littlesword.ozbargain.categorylist.MainActivity;
+import com.littlesword.ozbargain.MainActivity;
 import com.littlesword.ozbargain.util.NotificationUtil;
 
 import java.lang.reflect.Type;
