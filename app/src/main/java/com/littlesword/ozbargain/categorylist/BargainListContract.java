@@ -20,8 +20,6 @@ public interface BargainListContract {
     interface Actions{
         void openBargain(Bargain bargain);
 
-        void loadBargainCategory();
-
         void loadBargainList(String category);
 
         void setView(BargainListContract.View view);

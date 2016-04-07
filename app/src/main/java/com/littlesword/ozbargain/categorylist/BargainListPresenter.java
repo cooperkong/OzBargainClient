@@ -24,11 +24,8 @@ public class BargainListPresenter implements BargainListContract.Actions {
         this.api = api;
     }
 
-
-
     @Override
     public void openBargain(final Bargain bargain) {
-
         view.showLoading();
         api.getHomePageAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(new Action1<Object>() {
                @Override
@@ -37,11 +34,6 @@ public class BargainListPresenter implements BargainListContract.Actions {
                }
            }
         );
-    }
-
-    @Override
-    public void loadBargainCategory() {
-
     }
 
     @Override
