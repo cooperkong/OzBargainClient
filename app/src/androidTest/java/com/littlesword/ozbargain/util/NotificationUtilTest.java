@@ -58,13 +58,7 @@ public class NotificationUtilTest extends ActivityInstrumentationTestCase2<MainA
     public void buildAndSendNotification() throws Exception {
         mDevice.pressHome();
         int id = NotificationUtil.generateId();
-        Bargain bargain = new Bargain();
-        bargain.nodeId = "node123";
-        bargain.title = "title";
-        bargain.image = "image";
-        bargain.description = "content";
-        bargain.submittedOn = "11/11 2011 12:00";
-        Notification n = NotificationUtil.build(mActivity, "title", "bargain content",bargain);
+        Notification n = NotificationUtil.build(mActivity, "title", "bargain content",dummyBargain());
         NotificationManager mgr = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         mgr.notify(id , n);
         mDevice.openNotification();//open the notification drawer
@@ -77,6 +71,17 @@ public class NotificationUtilTest extends ActivityInstrumentationTestCase2<MainA
         //use Espresso to verify that actual app is opened.
         //check if bargain detail fragment is opened
         onView(withId(R.id.bargain_detail_description)).check(matches(isDisplayed()));
+    }
+
+    private Bargain dummyBargain() {
+
+        Bargain bargain = new Bargain();
+        bargain.nodeId = "node123";
+        bargain.title = "title";
+        bargain.image = "image";
+        bargain.description = "content";
+        bargain.submittedOn = "11/11 2011 12:00";
+        return bargain;
     }
 
     @Test
