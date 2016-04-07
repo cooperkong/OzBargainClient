@@ -38,6 +38,7 @@ import butterknife.ButterKnife;
 public class BargainListFragment extends Fragment implements BargainListContract.View {
     private static final String DIALOG_TAG = "loading_dialog_tag";
     private static final String CAT_ID = "category_string";
+    public static final String NOTIFICATION_EXTRA = "notification_action";
     @Inject BargainListContract.Actions actions;
     @Bind(R.id.bargain_menu_recyclerview)
     RecyclerView mRecycleView;
@@ -66,6 +67,7 @@ public class BargainListFragment extends Fragment implements BargainListContract
         ButterKnife.bind(this, v);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
+
         return v;
     }
 
@@ -76,9 +78,18 @@ public class BargainListFragment extends Fragment implements BargainListContract
                 ((MainApplication)getActivity().getApplication()).getAppComponent()
         ).build().inject(this);
         actions.setView(this);
-        showLoading();
-        //fetching the Home page of OZBargain
-        actions.loadBargainList(getArguments().getString(CAT_ID));
+
+        //in case MainActivity is opened from notification
+        Bargain bargain = null;
+        if(getActivity().getIntent() != null) {
+            bargain = (Bargain) getActivity().getIntent().getSerializableExtra(NOTIFICATION_EXTRA);
+            getActivity().getIntent().removeExtra(NOTIFICATION_EXTRA);
+        }
+        if(bargain != null)
+            actions.openBargain(bargain);
+        else
+            //fetching the Home page of OZBargain
+            actions.loadBargainList(getArguments().getString(CAT_ID));
     }
 
     private void updateTimestamp(ArrayList<Bargain> list) throws ParseException {

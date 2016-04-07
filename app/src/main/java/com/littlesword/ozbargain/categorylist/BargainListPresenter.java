@@ -38,6 +38,7 @@ public class BargainListPresenter implements BargainListContract.Actions {
 
     @Override
     public void loadBargainList(String category) {
+        view.showLoading();
         api.getHomePageAsync(CatUrls.BASE_URL +  category)
             .subscribe(new Subscriber<Object>() {
                @Override
