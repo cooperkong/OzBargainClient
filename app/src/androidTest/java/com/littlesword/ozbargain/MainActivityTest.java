@@ -1,9 +1,12 @@
 package com.littlesword.ozbargain;
 
+import android.app.Instrumentation;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -24,12 +27,16 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.littlesword.ozbargain.TestUtil.matchToolbarTitle;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.hasItems;
@@ -92,9 +99,6 @@ public class MainActivityTest {
                 .perform(click());// click on settings
         onView(withText(R.string.pref_notification_title))
                 .check(matches(notNullValue()));//check if settings screen is opened
-
-//        onView(withContentDescription(android.support.v7.appcompat.R.string.abc_action_bar_up_description))
-//                .perform(click());//click home button
         Espresso.pressBack();
 
         //previous view should be shown
@@ -123,20 +127,18 @@ public class MainActivityTest {
                 .check(matches(isDisplayed()));
     }
 
-    private static Matcher<Object> withToolbarTitle(final Matcher<CharSequence> textMatcher) {
-        return new BoundedMatcher<Object, Toolbar>(Toolbar.class) {
-            @Override public boolean matchesSafely(Toolbar toolbar) {
-                return textMatcher.matches(toolbar.getTitle());//test public API rather than look for textviews inside the toolbar.
-            }
-            @Override public void describeTo(Description description) {
-                description.appendText("with toolbar title: ");
-                textMatcher.describeTo(description);
-            }
-        };
+    @Test
+    public void testOpenWebBrowser(){
+        onView(withId(R.id.bargain_menu_recyclerview))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.title_container))
+                .check(matches(isDisplayed()));
+        Intents.init();
+        onView(withId(R.id.bargain_detail_goto_btn)).perform(click());
+        Matcher<Intent> expectedIntent = allOf(hasAction(Intent.ACTION_VIEW), hasData("https://www.ozbargain.com.au/goto/220154"));
+        intending(expectedIntent).respondWith(new Instrumentation.ActivityResult(0, null));
+        Intents.intended(expectedIntent);
+        Intents.release();
     }
-    private static ViewInteraction matchToolbarTitle(
-            CharSequence title) {
-        return onView(isAssignableFrom(Toolbar.class))
-                .check(matches(withToolbarTitle(is(title))));
-    }
+
 }
