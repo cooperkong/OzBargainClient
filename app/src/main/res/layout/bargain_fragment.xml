@@ -40,17 +40,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <View
+            android:id="@+id/seperator"
+            android:layout_below="@id/bargain_detail_image"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#d3d3d3"/>
+
         <WebView
             android:id="@+id/bargain_detail_description"
             android:paddingLeft="-10dp"
             android:paddingRight="-10dp"
-            android:layout_below="@id/bargain_detail_image"
+            android:layout_below="@id/seperator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </WebView>
 
         <ScrollView
-            android:layout_below="@id/bargain_detail_image"
+            android:layout_below="@id/seperator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <LinearLayout

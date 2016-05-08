@@ -9,27 +9,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
+import com.littlesword.ozbargain.MainActivity;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.model.Bargain;
 import com.littlesword.ozbargain.network.APIImp;
 import com.littlesword.ozbargain.util.CatUrls;
-import com.littlesword.ozbargain.util.CommonUtil;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
-import com.littlesword.ozbargain.util.TimeUtil;
 
 import org.jsoup.nodes.Document;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static com.littlesword.ozbargain.util.AppUtil.isNew;
+import static com.littlesword.ozbargain.util.AppUtil.isWanted;
 
 /**
  * Created by kongw1 on 18/11/15.
@@ -49,7 +49,7 @@ public class BargainReceiver extends BroadcastReceiver {
                 String dismissedTime = intent.getExtras().getString(DISSMISSED_TIMESTAMP);
                 if(dismissedTime != null){
                     try {
-                        if(TimeUtil.isNew(lastBargainTimestamp, dismissedTime)){
+                        if(isNew(lastBargainTimestamp, dismissedTime)){
                             //save the new time stamp.
                             mPref.edit().putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP,dismissedTime).apply();
                         }
@@ -102,7 +102,9 @@ public class BargainReceiver extends BroadcastReceiver {
         ArrayList<Bargain> list = DocExtractor.getBargainItems(doc);
         SharedPreferences mPref = context.getSharedPreferences(NotificationUtil.SHARED_PREF, Context.MODE_PRIVATE);
         String lastBargainTimestamp = mPref.getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
-        if(TimeUtil.isNew(lastBargainTimestamp, list.get(0).submittedOn)) {
+
+        if(isWanted(list.get(0).tag ,mPref.getStringSet(MainActivity.CATEGORIES, null))
+                && isNew(lastBargainTimestamp, list.get(0).submittedOn)) {
 
             int mNotificationId = NotificationUtil.generateId();
             // Gets an instance of the NotificationManager service

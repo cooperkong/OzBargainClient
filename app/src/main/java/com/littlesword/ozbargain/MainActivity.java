@@ -70,8 +70,13 @@ public class MainActivity extends AppCompatActivity
     private void initFragment(Fragment notesFragment) {
         // Add the NotesFragment to the layout
         FragmentManager fragmentManager = getSupportFragmentManager();
+        if(fragmentManager.findFragmentByTag("tag") != null)
+            fragmentManager.getFragments().remove(fragmentManager.findFragmentByTag("tag"));
+        if(fragmentManager.findFragmentByTag("details_tag") != null)
+            fragmentManager.getFragments().remove(fragmentManager.findFragmentByTag("details_tag"));
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, notesFragment);
+        transaction.replace(R.id.fragment_container, notesFragment, "tag");
         transaction.commit();
     }
 
@@ -93,9 +98,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("tag");
         if (mDrawer.isDrawerOpen(GravityCompat.START)) {
             mDrawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (fragment != null && fragment.isVisible()){
+            finish();
+        } else{
             super.onBackPressed();
         }
     }
@@ -150,25 +158,10 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setTitle(s);
     }
 
-
-
-
-
-    private void processNotificationAction(Document document, Bargain bargain) {
-//        mainInterface.dismissLoading();
-        //get to the bargain node details page.
-        bargain.comments = DocExtractor.getComments(document);
-        bargain.coupon = DocExtractor.getCoupon(document);
-        bargain.description = DocExtractor.getDescription(document);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
-                .addToBackStack("detail_fragment")
-                .commit();
-    }
-
     public long getIntervalFromPref() {
-        return Long.parseLong(PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(SettingsFragment.INTERVAL_NOTIFICATION, SettingsFragment.DEFAULT_INTERVAL+""));
+//        return Long.parseLong(PreferenceManager.getDefaultSharedPreferences(this)
+//                .getString(SettingsFragment.INTERVAL_NOTIFICATION, SettingsFragment.DEFAULT_INTERVAL+""));
+        return 6000;
     }
 
     @Override

@@ -22,7 +22,7 @@ import com.littlesword.ozbargain.bargaindetail.BargainDetailFragment;
 import com.littlesword.ozbargain.mvp.view.DialogFragment;
 import com.littlesword.ozbargain.util.DocExtractor;
 import com.littlesword.ozbargain.util.NotificationUtil;
-import com.littlesword.ozbargain.util.TimeUtil;
+import com.littlesword.ozbargain.util.AppUtil;
 
 import org.jsoup.nodes.Document;
 
@@ -71,22 +71,15 @@ public class BargainListFragment extends Fragment implements BargainListContract
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
 
+        DaggerBargainListComponent.builder().appComponent(
+                ((MainApplication)getActivity().getApplication()).getAppComponent()
+        ).build().inject(this);
+        actions.setView(this);
         MainApplication application = (MainApplication) getActivity().getApplication();
         mTracker = application.getDefaultTracker();
         mTracker.setScreenName("Bargain list");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         mTracker.send(new HitBuilders.TimingBuilder().build());
-
-        return v;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        DaggerBargainListComponent.builder().appComponent(
-                ((MainApplication)getActivity().getApplication()).getAppComponent()
-        ).build().inject(this);
-        actions.setView(this);
 
         //in case MainActivity is opened from notification
         Bargain bargain = null;
@@ -99,13 +92,20 @@ public class BargainListFragment extends Fragment implements BargainListContract
         else
             //fetching the Home page of OZBargain
             actions.loadBargainList(getArguments().getString(CAT_ID));
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     private void updateTimestamp(ArrayList<Bargain> list) throws ParseException {
 
         String savedLastTimestamp = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE)
                 .getString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, "11/11/2011 11:11");
-        if(TimeUtil.isNew(savedLastTimestamp, list.get(0).submittedOn)) {
+        if(AppUtil.isNew(savedLastTimestamp, list.get(0).submittedOn)) {
             SharedPreferences.Editor mPref = getActivity().getSharedPreferences(NotificationUtil.SHARED_PREF,Context.MODE_PRIVATE).edit();
             mPref.putString(NotificationUtil.LATEST_BARGAIN_TIMESTAMP, list.get(0).submittedOn);
             mPref.apply();
@@ -115,16 +115,20 @@ public class BargainListFragment extends Fragment implements BargainListContract
 
     @Override
     public void showLoading() {
-        DialogFragment dialog = DialogFragment.newInstant();
-        dialog.show(getActivity().getSupportFragmentManager().beginTransaction(), DIALOG_TAG);
+        if(getActivity() != null) {
+            DialogFragment dialog = DialogFragment.newInstant();
+            dialog.show(getActivity().getSupportFragmentManager().beginTransaction(), DIALOG_TAG);
+        }
 
     }
 
     @Override
     public void dismissLoading() {
-        DialogFragment loading = (DialogFragment) getActivity().getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
-        if(loading != null)
-            loading.dismiss();
+        if(getActivity() != null) {
+            DialogFragment loading = (DialogFragment) getActivity().getSupportFragmentManager().findFragmentByTag(DIALOG_TAG);
+            if (loading != null)
+                loading.dismiss();
+        }
     }
 
     @Override
@@ -149,7 +153,7 @@ public class BargainListFragment extends Fragment implements BargainListContract
     @Override
     public void openBargainDetails(Bargain bargain) {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain))
+                .replace(R.id.fragment_container, BargainDetailFragment.newInstance(bargain), "details_tag")
                 .addToBackStack("detail_fragment")
                 .commit();
     }
@@ -160,24 +164,6 @@ public class BargainListFragment extends Fragment implements BargainListContract
         dismissLoading();
     }
 
-    private void processDoc(Document doc) {
-//        //in case MainActivity is opened from notification
-//        Bargain bargain = null;
-//        if(getIntent() != null)
-//            bargain = (Bargain) getIntent().getSerializableExtra(NOTIFICATION_EXTRA);
-//        if(bargain != null){
-//            final Bargain finalBargain = bargain;
-//            api.getHomePageAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(new Action1<Object>() {
-//                    @Override
-//                    public void call(Object o) {
-//                        processNotificationAction(document, finalBargain);
-//                    }
-//                }
-//            );
-//        }
-
-
-    }
 
     public interface CallBack {
         void onCategoryLoaded(Document doc);

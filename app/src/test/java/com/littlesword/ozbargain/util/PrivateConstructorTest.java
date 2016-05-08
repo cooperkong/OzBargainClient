@@ -17,7 +17,7 @@ public class PrivateConstructorTest {
     @Test
     public void callPrivateConstructorsForCodeCoverage() throws SecurityException, NoSuchMethodException, IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        Class<?>[] classesToConstruct = {CommonUtil.class, TimeUtil.class, Injection.class};
+        Class<?>[] classesToConstruct = {CommonUtil.class, AppUtil.class, Injection.class};
         for(Class<?> clazz : classesToConstruct)
         {
             Constructor<?> constructor = clazz.getDeclaredConstructor();
