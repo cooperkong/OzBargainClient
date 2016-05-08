@@ -1,4 +1,4 @@
-
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply from: '../jacoco.gradle'
@@ -85,6 +85,7 @@ dependencies {
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestCompile "com.android.support.test.espresso:espresso-intents:2.2.1"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.facebook.fresco:fresco:0.6.1'

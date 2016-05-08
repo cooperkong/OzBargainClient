@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "897877105589",
+    "project_id": "ozbargain-283b6"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:897877105589:android:a5d068c0903d24cb",
+        "android_client_info": {
+          "package_name": "com.littlesword.ozbargain"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUBcVBYp_KXwkWJMZpfRE5H0tRZSM63Zw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-77443754-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
