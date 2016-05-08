@@ -28,6 +28,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by kongw1 on 18/11/15.
@@ -66,27 +68,29 @@ public class BargainReceiver extends BroadcastReceiver {
                 activeNetwork.isConnectedOrConnecting();
         if(isConnected)
             api.getHomePageAsync(CatUrls.BASE_URL)
-                    .subscribe(new Subscriber<Object>() {
-                                   @Override
-                                   public void onCompleted() {
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.newThread())
+            .subscribe(new Subscriber<Object>() {
+                           @Override
+                           public void onCompleted() {
 
-                                   }
+                           }
 
-                                   @Override
-                                   public void onError(Throwable e) {
-                                       handlerError(e);
-                                   }
+                           @Override
+                           public void onError(Throwable e) {
+                               handlerError(e);
+                           }
 
-                                   @Override
-                                   public void onNext(Object o) {
-                                       try {
-                                           processDoc((Document) o, context);
-                                       } catch (ParseException e) {
-                                           e.printStackTrace();
-                                       }
-                                   }
+                           @Override
+                           public void onNext(Object o) {
+                               try {
+                                   processDoc((Document) o, context);
+                               } catch (ParseException e) {
+                                   e.printStackTrace();
                                }
-                    );
+                           }
+                       }
+            );
     }
 
 
