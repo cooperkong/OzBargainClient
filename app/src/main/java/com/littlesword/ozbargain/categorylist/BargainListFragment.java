@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.littlesword.ozbargain.MainApplication;
 import com.littlesword.ozbargain.R;
 import com.littlesword.ozbargain.adapter.BargainMenuRecyclerViewAdapter;
@@ -45,6 +47,7 @@ public class BargainListFragment extends Fragment implements BargainListContract
     private RecyclerView.LayoutManager mLayoutManager;
     private BargainMenuRecyclerViewAdapter mAdapter;
     private CallBack callBack;
+    private Tracker mTracker;
 
     @Override
     public void onAttach(Context context) {
@@ -67,6 +70,12 @@ public class BargainListFragment extends Fragment implements BargainListContract
         ButterKnife.bind(this, v);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
+
+        MainApplication application = (MainApplication) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName("Bargain list");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        mTracker.send(new HitBuilders.TimingBuilder().build());
 
         return v;
     }
