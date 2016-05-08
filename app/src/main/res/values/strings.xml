@@ -21,5 +21,6 @@
     <string name="notification_new_deal">New deal!</string>
     <string name="pref_notification_title4">Favorite Category</string>
     <string name="pref_notification_summary3">Will receive notification only for these categories</string>
+    <string name="all">All</string>
 
 </resources>
