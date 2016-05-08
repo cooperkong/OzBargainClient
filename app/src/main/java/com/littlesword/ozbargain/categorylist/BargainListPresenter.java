@@ -10,7 +10,9 @@ import org.jsoup.nodes.Document;
 import javax.inject.Inject;
 
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by kongw1 on 17/03/16.
@@ -27,7 +29,10 @@ public class BargainListPresenter implements BargainListContract.Actions {
     @Override
     public void openBargain(final Bargain bargain) {
         view.showLoading();
-        api.getHomePageAsync(CatUrls.BASE_URL + "/" + bargain.nodeId).subscribe(new Action1<Object>() {
+        api.getHomePageAsync(CatUrls.BASE_URL + "/" + bargain.nodeId)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Object>() {
                @Override
                public void call(Object document) {
                    processDocument((Document) document, bargain);
@@ -40,6 +45,8 @@ public class BargainListPresenter implements BargainListContract.Actions {
     public void loadBargainList(String category) {
         view.showLoading();
         api.getHomePageAsync(CatUrls.BASE_URL +  category)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Subscriber<Object>() {
                @Override
                public void onCompleted() {

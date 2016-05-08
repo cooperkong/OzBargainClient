@@ -39,9 +39,7 @@ public final class APIImp implements APIInterface{
         return Observable.defer(new Func0<Observable<Document>>() {
             @Override
             public Observable<Document> call() {
-                return Observable.just(getHomePage(url))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
+                return Observable.just(getHomePage(url));
             }
         });
     }
